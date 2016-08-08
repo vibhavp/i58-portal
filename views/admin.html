@@ -1,25 +1,92 @@
 <html>
+    <head>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    </head>
+
     <body>
-	<h1> Add Matches </h1>
-	<form action="/api/admin/add_match" action="get">
-	    URL: <input type="url" name="url" required><br>
-	    Title: <input type="text" name="title" required><br>
-	    Page: <input type="url" name="page" required><br>
-	    <input type="submit">
-	</form>
-	<h1> Add Highlights </h1>
-	<form action="/api/admin/add_highlight" action="get">
-	    logs.tf URL: <input type="url" name="url" required><br>
-	    twitch highlight: <input type="url" name="highlight" required><br>
-	    <input type="submit">
-	</form>
-	<h1>Login</h1>
-	<form action="/api/login" method="get">
-	    Username
-	    <input type="text" name="username">
-	    Password
-	    <input type="password" name="password">
-	    <input type="submit" value="Submit">
-	</form>
+	    {{if .notLoggedIn}}
+	    <div class="mdl-cell">
+		<div class="demo-card-square mdl-card mdl-shadow--2dp">
+		    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+			<h2 class="mdl-card__title-text">Login</h2>
+		    </div>
+
+		    <div class="mdl-card__supporting-text">
+			<form action="/api/login" method="get">  
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="username" type="text" name="username" required>
+				<label class="mdl-textfield__label" for="username">Username</label>
+			    </div>
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="password" type="password" name="password" required>
+				<label class="mdl-textfield__label" for="password">Password</label>
+			    </div>
+			    <div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--colored" type="submit">Log In</button>
+			    </div>
+
+			</form>
+		    </div>
+		</div>
+	    </div>
+	    {{else}}
+	<div class="mdl-grid">
+	    <div class="mdl-cell">
+		<div class="demo-card-square mdl-card mdl-shadow--2dp">
+		    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+			<h2 class="mdl-card__title-text">Add Match</h2>
+		    </div>
+		    <div class="mdl-card__supporting-text">
+			<form action="/api/admin/add_match" action="get">
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="url" type="url" name="url" required>
+				<label class="mdl-textfield__label" for="url">logs.tf URL</label>
+			    </div>
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="title" type="text" name="title" required>
+				<label class="mdl-textfield__label" for="title">Match Title</label>
+			    </div>
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="page" type="url" name="page" required><br>
+				<label class="mdl-textfield__label" for="page">Match Page</label>
+			    </div>
+			    <div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--colored" type="submit">Submit</button>
+			    </div>
+			</form>
+		    </div>
+		</div>
+	    </div>
+
+	    <div class="mdl-cell">
+		<div class="demo-card-square mdl-card mdl-shadow--2dp">
+		    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+			<h2 class="mdl-card__title-text">Add Highlight</h2>
+		    </div>
+		    <div class="mdl-card__supporting-text">
+			<form action="/api/admin/add_highlight" action="get">
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="url" type="url" name="url" required>
+				<label class="mdl-textfield__label" for="url">logs.tf URL</label>
+			    </div>
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="highlight" type="url" name="highlight" required>
+				<label class="mdl-textfield__label" for="highlight">Twitch Highlight URL</label>
+			    </div>
+			    <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" id="title" type="text" name="title" required>
+				<label class="mdl-textfield__label" for="title">Highlight Title</label>
+			    </div>
+			    <div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--colored" type="submit">Submit</button>
+			    </div>
+			</form>
+		    </div>
+		</div>
+	    </div>
+	    {{end}}
+	</div>
     </body>
 </html>

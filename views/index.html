@@ -28,6 +28,11 @@
 		<div class="mdl-layout__header-row">
 		    <!-- Title -->
 		    <span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>
+		    {{if .loggedIn}}
+		    <nav class="mdl-navigation">
+			<a class="mdl-navigation__link" href="/admin" target="_blank">Admin</a>
+		    </nav>
+		    {{end}}
 		</div>
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 		    <a href="#matches" class="mdl-layout__tab">Matches</a>
@@ -41,15 +46,13 @@
 		    <ul class="mdl-list">
 			{{range $match := .matches}}
 			<li class="mdl-list__item">
-			    <span class="mdl-list__item-primary-content">
-				{{$match.Title}}
-			    </span>
-			    <span class="mdl-list__item-secondary-content">
+			    <span class="mdl-list__item-primary-content">{{$match.Title}}</span>
+			    <span class="mdl-list__item-secondary-action">
 				<button class="mdl-button mdl-js-button mdl-button--raised">
 				    <a href="{{$match.MatchPage}}" target="_blank"> Match Page</a>
 				</button>
-
 			    </span>
+			    
 			</li>
 			{{end}}
 		    </ul>
