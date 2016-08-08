@@ -1,8 +1,6 @@
 package models
 
 import (
-	"errors"
-
 	"github.com/TF2Stadium/logstf"
 	db "github.com/vibhavp/i58-portal/database"
 )
@@ -29,8 +27,13 @@ func exists(id int) bool {
 
 func AddMatch(logsID int, title string, page string) error {
 	if exists(logsID) {
-		return errors.New("This match has already been added")
+		db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
+			Update("title", title)
+		db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
+			Update("match_page", page)
+		return nil
 	}
+
 	db.DB.Save(&Match{
 		LogsID:    logsID,
 		Title:     title,
