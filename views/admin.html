@@ -1,0 +1,25 @@
+<html>
+    <body>
+	<h1> Add Matches </h1>
+	<form action="/api/admin/add_match" action="get">
+	    URL: <input type="url" name="url" required><br>
+	    Title: <input type="text" name="title" required><br>
+	    Page: <input type="url" name="page" required><br>
+	    <input type="submit">
+	</form>
+	<h1> Add Highlights </h1>
+	<form action="/api/admin/add_highlight" action="get">
+	    logs.tf URL: <input type="url" name="url" required><br>
+	    twitch highlight: <input type="url" name="highlight" required><br>
+	    <input type="submit">
+	</form>
+	<h1>Login</h1>
+	<form action="/api/login" method="get">
+	    Username
+	    <input type="text" name="username">
+	    Password
+	    <input type="password" name="password">
+	    <input type="submit" value="Submit">
+	</form>
+    </body>
+</html>
