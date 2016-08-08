@@ -12,7 +12,7 @@ import (
 var reValidURL = regexp.MustCompile(`logs.tf/(\d+)`)
 
 func addMatch(w http.ResponseWriter, r *http.Request) {
-	if !isLoggedIn(r) {
+	if !IsLoggedIn(r) {
 		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
 		return
 	}
@@ -52,7 +52,7 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 }
 
 func addHighlight(w http.ResponseWriter, r *http.Request) {
-	if !isLoggedIn(r) {
+	if !IsLoggedIn(r) {
 		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
 		return
 	}
@@ -76,7 +76,13 @@ func addHighlight(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.AddHighlight(id, highlight)
+	title := r.URL.Query().Get("title")
+	if title == "" {
+		http.Error(w, "Missing title", http.StatusBadRequest)
+		return
+	}
+
+	err = models.AddHighlight(id, highlight, title)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
