@@ -13,13 +13,11 @@ func init() {
 	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./views/draw.html")
 	})
-	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./views/admin.html")
-	})
+	http.HandleFunc("/admin", serveAdmin)
 	http.HandleFunc("/api/login", api.Login)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/",
 		http.FileServer(http.Dir("./views/assets"))))
 	http.Handle("/js/", http.StripPrefix("/js/",
-		http.FileServer(http.Dir("./views/js"))))
+		http.FileServer(http.Dir("./js"))))
 }
