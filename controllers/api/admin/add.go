@@ -16,20 +16,33 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
 		return
 	}
+	query := r.URL.Query()
 
-	url := r.URL.Query().Get("url")
+	url := query.Get("url")
 	if url == "" || !reValidURL.MatchString(url) {
 		http.Error(w, "Missing/Invalid logs URL", http.StatusBadRequest)
 		return
 	}
 
-	title := r.URL.Query().Get("title")
-	if title == "" {
-		http.Error(w, "Missing title", http.StatusBadRequest)
+	team1 := query.Get("team1")
+	if team1 == "" {
+		http.Error(w, "Missing team1", http.StatusBadRequest)
 		return
 	}
 
-	page := r.URL.Query().Get("page")
+	team2 := query.Get("team2")
+	if team2 == "" {
+		http.Error(w, "Missing team2", http.StatusBadRequest)
+		return
+	}
+
+	stage := query.Get("stage")
+	if stage == "" {
+		http.Error(w, "Missing stage", http.StatusBadRequest)
+		return
+	}
+
+	page := query.Get("page")
 	if page == "" {
 		http.Error(w, "Missing page", http.StatusBadRequest)
 		return
@@ -42,7 +55,7 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.AddMatch(id, title, page)
+	err = models.AddMatch(id, team1, team2, stage, page)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

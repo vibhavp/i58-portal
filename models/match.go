@@ -8,7 +8,9 @@ import (
 type Match struct {
 	ID         uint   `gorm:"primary_key" json:"-"`
 	LogsID     int    `sql:"not null;unique"`
-	Title      string `sql:"not null"`
+	Team1      string `sql:"not null"`
+	Team2      string `sql:"not null"`
+	Stage      string `sql:"not null"`
 	MatchPage  string `sql:"not null"`
 	Highlights []Highlight
 }
@@ -21,22 +23,27 @@ func GetAllMatches() []Match {
 
 func exists(id int) bool {
 	var count uint
-	db.DB.DB().QueryRow("SELECT COUNT(*) FROM matches WHERE logs_id = ?", id).Scan(&count)
+	db.DB.DB().QueryRow("SELECT COUNT(*) FROM matches WHERE logs_id = ?", id).
+		Scan(&count)
 	return count != 0
 }
 
-func AddMatch(logsID int, title string, page string) error {
+func AddMatch(logsID int, team1, team2, stage, page string) error {
 	if exists(logsID) {
-		db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
-			Update("title", title)
-		db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
-			Update("match_page", page)
-		return nil
+		return db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
+			Update(map[string]string{
+				"team1":      team1,
+				"team2":      team2,
+				"stage":      stage,
+				"match_page": page,
+			}).Error
 	}
 
 	db.DB.Save(&Match{
 		LogsID:    logsID,
-		Title:     title,
+		Team1:     team1,
+		Team2:     team2,
+		Stage:     stage,
 		MatchPage: page,
 	})
 	return addStats(logsID)
