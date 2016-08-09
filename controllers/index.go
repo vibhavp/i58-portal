@@ -9,6 +9,18 @@ import (
 	"github.com/vibhavp/i58-portal/models"
 )
 
+type stat struct {
+	Stat   float64
+	Player models.Player
+}
+
+type highest struct {
+	Name            string
+	HighestDPM      stat
+	HighestKD       stat
+	HighestAirshots stat
+}
+
 var classes = map[string]string{
 	"scout":        "Scout",
 	"soldier":      "Soldier",
@@ -21,10 +33,30 @@ var classes = map[string]string{
 	"pyro":         "Pyro",
 }
 
+func newClassMap() map[string]highest {
+	stats := make(map[string]highest, 9)
+
+	for class, _ := range classes {
+		dpm := models.GetHighestStat("dpm", class)
+		kd := models.GetHighestStat("kd", class)
+		var as models.AvgStats
+
+		if class == "demoman" || class == "soldier" {
+			as = *models.GetHighestStat("airshots", class)
+		}
+
+		stats[class] = highest{classes[class],
+			stat{dpm.DPM, dpm.Player},
+			stat{kd.KD, kd.Player},
+			stat{as.Airshots, as.Player}}
+	}
+	return stats
+}
+
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	indexPage := template.Must(template.ParseFiles("views/index.html"))
 	err := indexPage.Execute(w, map[string]interface{}{
-		"classes":  classes,
+		"classes":  newClassMap(),
 		"matches":  models.GetAllMatches(),
 		"loggedIn": admin.IsLoggedIn(r),
 	})
