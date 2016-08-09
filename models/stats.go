@@ -47,6 +47,12 @@ type AvgStats struct {
 	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
 }
 
+func GetHighestStat(stat, class string) *AvgStats {
+	s := &AvgStats{}
+	db.DB.Preload("Player").Where("class = ?", class).Order(stat + " DESC").First(s)
+	return s
+}
+
 func addPlayers(names map[string]string) {
 	for steamID, name := range names {
 		var count uint
