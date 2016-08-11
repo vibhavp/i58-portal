@@ -57,6 +57,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 	indexPage := template.Must(template.ParseFiles("views/index.html"))
 	err := indexPage.Execute(w, map[string]interface{}{
 		"classes":  newClassMap(),
+		"classMap": classes,
 		"matches":  models.GetAllMatches(),
 		"loggedIn": admin.IsLoggedIn(r),
 	})

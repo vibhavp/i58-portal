@@ -13,6 +13,6 @@ var Config = struct {
 }{}
 
 func init() {
-	envconfig.MustProcess("", &Config)
+	envconfig.MustProcess("PORTAL", &Config)
 	log.Printf("username: %s, password %s", Config.Username, Config.Password)
 }

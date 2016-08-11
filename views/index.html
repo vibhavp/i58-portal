@@ -1,21 +1,46 @@
+{{$classMap := .classMap}}
 <html>
     <head>
 	<style>
-	 .body {
+	 hr.style1 {
+	     border-width: 1px;
+	     color: rgba(255, 255, 255, 0.12);
 	 }
-	 .class-image > .mdl-card__media {
-	     align-items: center;
-	     justify-content: center;
-	     width: 200px;
-	     height: 240px;
+	 .header-layer {
+	     color: rgba(255, 255, 255, 0.12);
 	 }
+	 .list-item {
+	    height: 1px !important;
+	 }
+
+	 h5.stat-card {
+	     text-align: center;
+	 }
+	 h3.stat-card {
+	     text-align: center;
+	     word-wrap: break-word;
+	     color: #000000
+	 }
+	 p.stat-card {
+	     text-align: center;
+	 }
+	 {{range $class, $info := .classes}}
+	 .stat-card-{{$class}}.mdl-card {
+	     width: 191px;
+	 }
+	 .stat-card-{{$class}} > .mdl-card__title {
+	     height: 254px;
+	     width: 191px;
+	     background: url('assets/{{$class}}.jpg') center / cover;
+	 }
+	 {{end}}
 	</style>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.deep_purple-deep_orange.min.css"/>
 	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     </head>
     <body>
-	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+	<div class="header-layer mdl-layout mdl-js-layout mdl-layout--fixed-header
 		    mdl-layout--fixed-tabs">
 	    <header class="mdl-layout__header">
 		<div class="mdl-layout__header-row">
@@ -36,9 +61,9 @@
 	    <main class="mdl-layout__content">
 		<section class="mdl-layout__tab-panel" id="matches">
 		    <!-- MATCHES -->
-		    <ul class="mdl-list">
+		    <ul class="list-item mdl-list">
 			{{range $match := .matches}}
-			<li class="mdl-list__item mdl-list__item--two-line mdl-shadow--2dp">
+			<li class="list-item mdl-list__item mdl-list__item--two-line">
 			    <span class="mdl-list__item-primary-content">
 				<span><i>{{$match.Team1}}</i>&nbsp;vs&nbsp;<i>{{$match.Team2}}</i></span>
 				<span class="mdl-list__item-sub-title">
@@ -51,8 +76,22 @@
 				<button class="mdl-button mdl-js-button">
 				    <a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
 				</button>
+				{{if $match.Highlights}}
+				<button id="highlights-{{$match.ID}}" class="mdl-button mdl-js-button">
+				    Highlights
+				</button>
+				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+				    for="highlights-{{$match.ID}}">
+				    {{range $highlight := $match.Highlights}}
+				    <li class="mdl-menu__item">
+					<a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
+				    </li>
+				    {{end}}
+				</ul>
+				{{end}}
 			    </span>
-			</li>{{end}}
+			</li>
+			<hr class="style1">{{end}}
 		    </ul>
 
 		</section>
@@ -61,37 +100,22 @@
 		    <div class="mdl-grid">
 			{{range $class, $info := .classes}}
 			{{if $info.HighestDPM.Player.Name}}
+			{{$className := index $classMap $class}}
 			<div class="mdl-cell">
-			    <div class="class-image mdl-card mdl-shadow--2dp">
-				<div class="mdl-card__title mdl-card--expand">
-				    <h2 class="mdl-card__title-text">{{$info.Name}}</h2>
-				</div>
-				<div class="mdl-card__media">
-				    <img src='{{printf "/assets/%s.jpg" $class}}' width=200 height=240>
-				</div>
+			    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				<div class="mdl-card__title"></div>
 				<div class="mdl-card__supporting-text">
-				    <ul class="demo-list-item mdl-list">
-					<li class="mdl-list__item">
-					    <span class="mdl-list__item-primary-content">Highest DPM</span>
-					    <span class="mdl-list__item-secondary-action">
-						<a href={{printf "/stats?playerid=%d" $info.HighestDPM.Player.ID}}>
-						    {{$info.HighestDPM.Player.Name}}</a>
-					    </span>
-					</li>
-					<!-- <li class="mdl-list__item">
-					     <span class="mdl-list__item-primary-content">Highest K/D ratio</span>
-					     <span class="mdl-list__item-secondary-action">
-					     <a href={{printf "/stats?playerid=%d" $info.HighestKD.Player.ID}}>
-					     {{$info.HighestKD.Player.Name}}</a>
-					     </span>
-					     </li> -->
-				    </ul>
+				    <h3 class="stat-card">{{$info.HighestDPM.Player.Name}}</h3>
+				    <h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
+				    <h5 class="stat-card"> Highest {{$className}} DPM</h5>
 				</div>
-				<div class="mdl-card__actions">
+				<p class="stat-card">
+				<div class="mdl-card__actions mdl-card--border">
 				    <button class="mdl-button mdl-js-button">
-					<a href='{{printf "/stats?class=%s" $class}}'>View Stats</a>
-				    </button>
+					<a href="/stats?class={{$class}}">All {{$className}} Stats</a>
+					</button>
 				</div>
+				</p>
 			    </div>
 			</div>
 			{{end}}
