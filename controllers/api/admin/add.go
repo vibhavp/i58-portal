@@ -101,3 +101,35 @@ func addHighlight(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func addPlayer(w http.ResponseWriter, r *http.Request) {
+	if !IsLoggedIn(r) {
+		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
+		return
+	}
+
+	query := r.URL.Query()
+
+	steamID := query.Get("steamid")
+	if steamID == "" {
+		http.Error(w, "Missing SteamID", http.StatusBadRequest)
+		return
+	}
+
+	name := query.Get("name")
+	if name == "" {
+		http.Error(w, "Missing Name", http.StatusBadRequest)
+		return
+	}
+
+	team := query.Get("team")
+	if team == "" {
+		http.Error(w, "Missing Team", http.StatusBadRequest)
+		return
+	}
+
+	if err := models.SetPlayerInfo(steamID, name, team); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
