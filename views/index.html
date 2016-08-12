@@ -31,7 +31,12 @@
 	 .stat-card-{{$class}} > .mdl-card__title {
 	     height: 254px;
 	     width: 191px;
-	     background: url('assets/{{$class}}.jpg') center / cover;
+	     background: url('assets/{{$class}}.jpg') center;
+	 }
+	 .stat-card-{{$class}} > .mdl-card__actions {
+	     align-items: center;
+	     display: flex;
+	     box-sizing:border-box;
 	 }
 	 {{end}}
 	</style>
@@ -109,10 +114,11 @@
 				    <h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
 				    <h5 class="stat-card"> Highest {{$className}} DPM</h5>
 				</div>
-				<p class="stat-card">
-				<div class="mdl-card__actions mdl-card--border">
+				<p>
+				<div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
 				    <button class="mdl-button mdl-js-button">
-					<a href="/stats?class={{$class}}">All {{$className}} Stats</a>
+					<a href="/stats?class={{$class}}">
+					    <p class="stat-card">{{$className}} Stats</p></a>
 					</button>
 				</div>
 				</p>
