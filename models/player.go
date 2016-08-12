@@ -28,3 +28,18 @@ func getOrCreatePlayerID(steamID string, names map[string]string) uint {
 
 	return id
 }
+
+func SetPlayerInfo(steamID, name, team string) error {
+	return db.DB.Model(&Player{}).Where("steam_id = ?", steamID).
+		Update(map[string]string{
+			"name":     name,
+			"team":     team,
+			"steam_id": steamID,
+		}).Error
+}
+
+func GetAllPlayer() []*Player {
+	var players []*Player
+	db.DB.Find(&players)
+	return players
+}
