@@ -10,7 +10,7 @@ import (
 )
 
 type stat struct {
-	Stat   float64
+	Stat   interface{}
 	Player models.Player
 }
 
@@ -46,7 +46,7 @@ func newClassMap() map[string]highest {
 		}
 
 		stats[class] = highest{classes[class],
-			stat{dpm.DPM, dpm.Player},
+			stat{int(dpm.DPM), dpm.Player},
 			stat{kd.KD, kd.Player},
 			stat{as.Airshots, as.Player}}
 	}
@@ -70,6 +70,7 @@ func serveAdmin(w http.ResponseWriter, r *http.Request) {
 	page := template.Must(template.ParseFiles("views/admin.html"))
 	err := page.Execute(w, map[string]interface{}{
 		"notLoggedIn": !admin.IsLoggedIn(r),
+		"players":     models.GetAllPlayers(),
 	})
 	if err != nil {
 		log.Println(err)
