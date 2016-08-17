@@ -10,7 +10,13 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	query := r.PostForm
 	pass := query.Get("password")
 	username := query.Get("username")
 
