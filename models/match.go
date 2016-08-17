@@ -12,6 +12,7 @@ type Match struct {
 	Team2      string `sql:"not null"`
 	Stage      string `sql:"not null"`
 	MatchPage  string `sql:"not null"`
+	Live       bool
 	Highlights []Highlight
 }
 
@@ -28,6 +29,16 @@ func exists(id int) bool {
 	return count != 0
 }
 
+func SetMatchLive(matchID int) error {
+	return db.DB.Table("matches").Where("id = ?", matchID).
+		Update("live", true).Error
+}
+
+func UnsetMatchLive(matchID int) error {
+	return db.DB.Table("matches").Where("id = ?", matchID).
+		Update("live", false).Error
+}
+
 func AddMatch(logsID int, team1, team2, stage, page string) error {
 	if exists(logsID) {
 		return db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
@@ -39,13 +50,17 @@ func AddMatch(logsID int, team1, team2, stage, page string) error {
 			}).Error
 	}
 
-	db.DB.Save(&Match{
+	err := db.DB.Create(&Match{
 		LogsID:    logsID,
 		Team1:     team1,
 		Team2:     team2,
 		Stage:     stage,
 		MatchPage: page,
-	})
+	}).Error
+	if err != nil {
+		return err
+	}
+
 	return addStats(logsID)
 }
 
@@ -69,24 +84,33 @@ func addStats(logsID int) error {
 				continue
 			}
 
-			var kd float64
+			var kd, ud float64
 			if cstats.Deaths == 0 {
 				kd = float64(cstats.Kills)
 			} else {
 				kd = float64(cstats.Kills) / float64(cstats.Deaths)
 			}
 
+			if cstats.Type == "medic" && cstats.TotalTime > 60*10 {
+				if stats.Drops == 0 {
+					ud = float64(stats.Ubers)
+				} else {
+					ud = float64(stats.Ubers) / float64(stats.Drops)
+				}
+			}
+
 			min := float64(cstats.TotalTime) / 60.0 // minutes played
 			stat := &Stat{
-				Class:     cstats.Type,
-				LogsID:    uint(logsID),
-				DPM:       float64(cstats.Damage) / min,
-				Kills:     cstats.Kills,
-				Deaths:    cstats.Deaths,
-				KD:        kd,
-				Drops:     stats.Drops,
-				TotalTime: cstats.TotalTime,
-				PlayerID:  id,
+				Class:        cstats.Type,
+				LogsID:       uint(logsID),
+				DPM:          float64(cstats.Damage) / min,
+				Kills:        cstats.Kills,
+				Deaths:       cstats.Deaths,
+				KD:           kd,
+				UbersPerDrop: ud,
+				Drops:        stats.Drops,
+				TotalTime:    cstats.TotalTime,
+				PlayerID:     id,
 			}
 			if cstats.Type == "soldier" || cstats.Type == "demoman" {
 				stat.Airshots = stats.Airshots

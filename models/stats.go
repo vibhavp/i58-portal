@@ -19,14 +19,16 @@ type Stat struct {
 	ID     uint `json:"-"`
 	LogsID uint `json:"-"`
 
-	Class     string  `json:"class"`
-	DPM       float64 `json:"dpm"`
-	Kills     int     `json:"kills"`
-	Deaths    int     `json:"deaths"`
-	KD        float64 `json:"kd"`
-	TotalTime int     `json:"-"`
-	Drops     int     `json:"drops"`
-	Airshots  int     `json:"airshots,omitempty"`
+	Class        string  `json:"class"`
+	DPM          float64 `json:"dpm"`
+	Kills        int     `json:"kills"`
+	Deaths       int     `json:"deaths"`
+	KD           float64 `json:"kd"`
+	TotalTime    int     `json:"-"`
+	Drops        int     `json:"drops"`
+	Ubers        int     `json:"ubers"`
+	UbersPerDrop float64 `json:"ubers_per_drops"`
+	Airshots     int     `json:"airshots,omitempty"`
 
 	PlayerID uint   `json:"-"`
 	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
@@ -35,13 +37,15 @@ type Stat struct {
 type AvgStats struct {
 	ID uint `json:"-"`
 
-	Class    string  `json:"class"`
-	DPM      float64 `json:"dpm"`
-	Kills    int     `json:"kills"`
-	Deaths   int     `json:"deaths"`
-	KD       float64 `json:"kd"`
-	Drops    float64 `json:"drops"`
-	Airshots float64 `json:"airshots,omitempty"`
+	Class        string  `json:"class"`
+	DPM          float64 `json:"dpm"`
+	Kills        int     `json:"kills"`
+	Deaths       int     `json:"deaths"`
+	KD           float64 `json:"kd"`
+	Ubers        float64 `json:"ubers"`
+	Drops        float64 `json:"drops"`
+	UbersPerDrop float64 `json:"ubers_per_drops"`
+	Airshots     float64 `json:"airshots,omitempty"`
 
 	PlayerID uint   `json:"-"`
 	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
@@ -70,13 +74,20 @@ var classes = []string{"scout", "soldier", "pyro", "demoman", "heavyweapons",
 	"medic", "spy", "sniper", "engineer"}
 
 func UpdateAvgStats(playerIDs []uint) {
+	tx := db.DB.Begin()
+
+	if tx.Error != nil {
+		log.Println(tx.Error)
+		return
+	}
+
 	for _, id := range playerIDs {
 		for _, class := range classes {
 			var final AvgStats
 			final.PlayerID = id
 			var stats []Stat
 
-			err := db.DB.Model(&Stat{}).Where("player_id = ? AND class = ?", id, class).Find(&stats).Error
+			err := tx.Model(&Stat{}).Where("player_id = ? AND class = ?", id, class).Find(&stats).Error
 			if err != nil {
 				log.Println(err)
 			}
@@ -91,14 +102,19 @@ func UpdateAvgStats(playerIDs []uint) {
 				final.Kills += stat.Kills / len(stats)
 				final.Deaths += stat.Deaths / len(stats)
 				final.KD += stat.KD / float64(len(stats))
+				final.UbersPerDrop += stat.UbersPerDrop / float64(len(stats))
 				final.Airshots += float64(stat.Airshots) / float64(len(stats))
 				final.Drops += float64(stat.Drops) / float64(len(stats))
 			}
 
-			db.DB.Where("player_id = ? AND class = ?", id, class).Delete(&AvgStats{})
-			db.DB.Save(&final)
+			tx.Where("player_id = ? AND class = ?", id, class).Delete(&AvgStats{})
+			tx.Save(&final)
 		}
 
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		log.Println(err)
 	}
 }
 
@@ -117,8 +133,9 @@ func GetPlayerStats(playerID uint) []Stat {
 			stats[i-1].DPM = (stats[i-1].DPM + stats[i].DPM) / 2.0
 			stats[i-1].Kills += stats[i].Kills
 			stats[i-1].Deaths += stats[i].Deaths
-			stats[i-1].KD += float64(stats[i-1].Kills) / float64(stats[i-1].Deaths)
+			stats[i-1].KD += float64(stats[i-1].Kills+stats[i].Kills) / float64(stats[i-1].Deaths+stats[i].Deaths)
 			stats[i-1].Drops += stats[i].Drops
+			stats[i-1].UbersPerDrop += stats[i].UbersPerDrop
 			stats[i-1].Airshots += stats[i].Airshots
 
 			stats = append(stats[:i], stats[i+1:]...)
