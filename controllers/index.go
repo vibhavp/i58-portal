@@ -33,6 +33,8 @@ var classes = map[string]string{
 	"pyro":         "Pyro",
 }
 
+var landing = false
+
 func newClassMap() map[string]highest {
 	stats := make(map[string]highest, 9)
 
