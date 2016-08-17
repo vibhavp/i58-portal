@@ -3,13 +3,14 @@ window.addEventListener('load', function () {
 
     var desc = {"dpm": "Damage Per Minute", "kills": "Kills", "kd": "K/D Ratio",
 		"airshots": "Airshots", "drops": "Drops",
-		"damage_per_heal": "Damage dealt per heal"};
+		"damage_per_heal": "Damage dealt per heal",
+		"ubers_per_drops": "Ubers per Drop"};
     var allStats = ["dpm", "kills", "kd", "airshots", "drops"];
     var validStats = {
 	"scout": ["dpm", "kills", "kd"],
 	"soldier": ["dpm", "kills", "kd", "airshots"],
 	"demoman": ["dpm", "kills", "kd", "airshots"],
-	"medic": ["drops"],
+	"medic": ["drops", "ubers_per_drops"],
 	"sniper": ["headshots", "kills"],
 	"spy": ["kills", "kd"],
 	"pyro": ["kills", "kd"],
@@ -30,11 +31,15 @@ window.addEventListener('load', function () {
 
 	data.sort(function(a, b) {
 	    return b[stat] - a[stat]
-	})
+	});
 
 	for (i in data) {
 	    if (Math.floor(data[i][stat]) != 0) {
-		labels.push(data[i].player.name);
+		var label = data[i].player.name;
+		if (data[i].player.team != "") {
+		    label += " ("+data[i].player.team+')';
+		}
+		labels.push();
 		dataset.push(data[i][stat]);
 	    } else {
 		zero = true;
