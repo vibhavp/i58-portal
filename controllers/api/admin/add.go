@@ -16,7 +16,12 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
 		return
 	}
-	query := r.URL.Query()
+
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	query := r.Form
 
 	url := query.Get("url")
 	if url == "" || !reValidURL.MatchString(url) {
@@ -70,7 +75,13 @@ func addHighlight(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url := r.URL.Query().Get("url")
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	query := r.Form
+
+	url := query.Get("url")
 	if url == "" || !reValidURL.MatchString(url) {
 		http.Error(w, "Missing/Invalid logs URL", http.StatusBadRequest)
 		return
@@ -83,13 +94,13 @@ func addHighlight(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	highlight := r.URL.Query().Get("highlight")
+	highlight := query.Get("highlight")
 	if highlight == "" {
 		http.Error(w, "Missing page", http.StatusBadRequest)
 		return
 	}
 
-	title := r.URL.Query().Get("title")
+	title := query.Get("title")
 	if title == "" {
 		http.Error(w, "Missing title", http.StatusBadRequest)
 		return
@@ -108,7 +119,11 @@ func addPlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := r.URL.Query()
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	query := r.Form
 
 	steamID := query.Get("steamid")
 	if steamID == "" {
