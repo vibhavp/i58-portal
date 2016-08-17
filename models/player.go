@@ -8,7 +8,7 @@ type Player struct {
 	ID      uint   `gorm:"primary_key" json:"id"`
 	Name    string `json:"name"`
 	SteamID string `sql:"not null;unique" json:"-"`
-	Team    string
+	Team    string `json:"team"`
 }
 
 func getOrCreatePlayerID(steamID string, names map[string]string) uint {
