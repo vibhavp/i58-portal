@@ -12,7 +12,6 @@ import (
 )
 
 func init() {
-	log.SetFlags(log.Lshortfile)
 	flag.Parse()
 }
 
