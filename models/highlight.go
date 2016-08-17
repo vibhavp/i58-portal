@@ -15,7 +15,8 @@ type Highlight struct {
 
 func AddHighlight(logsID int, url, title string) error {
 	var matchID uint
-	err := db.DB.DB().QueryRow("SELECT id FROM matches WHERE logs_id = $1", logsID).
+	err := db.DB.DB().
+		QueryRow("SELECT id FROM matches WHERE logs_id = $1", logsID).
 		Scan(&matchID)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -25,7 +26,7 @@ func AddHighlight(logsID int, url, title string) error {
 		}
 	}
 
-	return db.DB.Save(&Highlight{
+	return db.DB.Create(&Highlight{
 		MatchID: matchID,
 		Title:   title,
 		URL:     url,
