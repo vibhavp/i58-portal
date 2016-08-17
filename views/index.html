@@ -1,6 +1,9 @@
+{{$loggedIn := .loggedIn}}
 {{$classMap := .classMap}}
 <html>
     <head>
+	<title>i58 TF2 Portal</title>
+	<meta charset="utf-8" />
 	<style>
 	 hr.style1 {
 	     border-width: 1px;
@@ -43,6 +46,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.deep_purple-deep_orange.min.css"/>
 	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     </head>
     <body>
 	<div class="header-layer mdl-layout mdl-js-layout mdl-layout--fixed-header
@@ -51,7 +55,7 @@
 		<div class="mdl-layout__header-row">
 		    <!-- Title -->
 		    <span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>
-		    {{if .loggedIn}}
+		    {{if $loggedIn}}
 		    <nav class="mdl-navigation">
 			<a class="mdl-navigation__link" href="/admin" target="_blank">Admin</a>
 		    </nav>
@@ -70,9 +74,14 @@
 			{{range $match := .matches}}
 			<li class="list-item mdl-list__item mdl-list__item--two-line">
 			    <span class="mdl-list__item-primary-content">
+				{{if $match.Live}}
+				<div id="live" class="icon material-icons mdl-list__item-icon">tv</div>
+				<div class="mdl-tooltip mdl-tooltip--large" for="live">
+				    Live
+				</div>
+				{{end}}
 				<span><i>{{$match.Team1}}</i>&nbsp;vs&nbsp;<i>{{$match.Team2}}</i></span>
-				<span class="mdl-list__item-sub-title">
-				    {{$match.Stage}}</span>
+				<span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
 			    </span>
 			    <span class="mdl-list__item-secondary-action">
 				<button class="mdl-button mdl-js-button">
@@ -82,7 +91,8 @@
 				    <a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
 				</button>
 				{{if $match.Highlights}}
-				<button id="highlights-{{$match.ID}}" class="mdl-button mdl-js-button">
+				<button id="highlights-{{$match.ID}}"
+					class="mdl-button mdl-js-button">
 				    Highlights
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
@@ -94,11 +104,36 @@
 				    {{end}}
 				</ul>
 				{{end}}
+				{{if $loggedIn}}
+				<button id="admin-{{$match.ID}}"
+					class="mdl-button mdl-js-button">
+				    Admin
+				</button>
+				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+				    for="admin-{{$match.ID}}">
+				    <li class="mdl-menu__item">
+					<button id="live-{{$match.ID}}"
+						class="mdl-button mdl-js-button">
+					    {{if $match.Live}}Unset live{{else}}
+					    Set Live{{end}}
+					</button>
+				    </li>
+				</ul>
+				<script>
+				 $("#live-{{$match.ID}}").click(function() {
+				     $.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
+					    {match_id: {{$match.ID}}})
+				      .fail(function(data) {
+					  alert("Error: "+JSON.stringify(data))
+				      })
+				 });
+				</script>
+				{{end}}
+				</button>
 			    </span>
 			</li>
 			<hr class="style1">{{end}}
 		    </ul>
-
 		</section>
 		<section class="mdl-layout__tab-panel is-active" id="stats">
 		    <!-- STATS -->
