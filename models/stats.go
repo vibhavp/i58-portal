@@ -1,8 +1,6 @@
 package models
 
 import (
-	"log"
-
 	db "github.com/vibhavp/i58-portal/database"
 )
 
@@ -16,10 +14,10 @@ type AllClassStat struct {
 	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
 }
 type Stat struct {
-	ID     uint `json:"-"`
+	ID     uint `json:"-" gorm:"primary_key"`
 	LogsID uint `json:"-"`
 
-	Class        string  `json:"class"`
+	Class        string  `json:"class" sql:"not null"`
 	DPM          float64 `json:"dpm"`
 	Kills        int     `json:"kills"`
 	Deaths       int     `json:"deaths"`
@@ -31,13 +29,13 @@ type Stat struct {
 	Airshots     int     `json:"airshots,omitempty"`
 
 	PlayerID uint   `json:"-"`
-	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
+	Player   Player `gorm:"ForeignKey:PlayerID" json:"player" sql:"not null"`
 }
 
 type AvgStats struct {
-	ID uint `json:"-"`
+	ID uint `json:"-" gorm:"primary_key"`
 
-	Class        string  `json:"class"`
+	Class        string  `json:"class" sql:"not null"`
 	DPM          float64 `json:"dpm"`
 	Kills        int     `json:"kills"`
 	Deaths       int     `json:"deaths"`
@@ -48,12 +46,13 @@ type AvgStats struct {
 	Airshots     float64 `json:"airshots,omitempty"`
 
 	PlayerID uint   `json:"-"`
-	Player   Player `gorm:"ForeignKey:PlayerID" json:"player"`
+	Player   Player `gorm:"ForeignKey:PlayerID" json:"player" sql:"not null"`
 }
 
 func GetHighestStat(stat, class string) *AvgStats {
 	s := &AvgStats{}
-	db.DB.Preload("Player").Where("class = ?", class).Order(stat + " DESC").First(s)
+	db.DB.Preload("Player").Where("class = ?", class).
+		Order(stat + " DESC").First(s)
 	return s
 }
 
@@ -73,49 +72,43 @@ func addPlayers(names map[string]string) {
 var classes = []string{"scout", "soldier", "pyro", "demoman", "heavyweapons",
 	"medic", "spy", "sniper", "engineer"}
 
-func UpdateAvgStats(playerIDs []uint) {
-	tx := db.DB.Begin()
+func (stat *Stat) addAvg() {
+	avg := &AvgStats{}
+	n := 0
 
-	if tx.Error != nil {
-		log.Println(tx.Error)
-		return
+	err := db.DB.Where("player_id = ? AND class = ?", stat.PlayerID, stat.Class).
+		First(&avg).Error
+	if err == nil {
+		db.DB.Model(&Stat{}).Where("player_id = ? AND class = ?",
+			stat.PlayerID,
+			stat.Class).
+			Count(&n)
+	} else {
+		avg.PlayerID = stat.PlayerID
+		avg.Class = stat.Class
 	}
 
-	for _, id := range playerIDs {
-		for _, class := range classes {
-			var final AvgStats
-			final.PlayerID = id
-			var stats []Stat
+	setCumAvg(stat.DPM, &avg.DPM, n)
+	setCumAvgInt(stat.Kills, &avg.Kills, n)
+	setCumAvgInt(stat.Deaths, &avg.Deaths, n)
+	setCumAvg(stat.KD, &avg.KD, n)
+	setCumAvgIntFloat(stat.Ubers, &avg.Ubers, n)
+	setCumAvgIntFloat(stat.Drops, &avg.Drops, n)
+	setCumAvg(stat.UbersPerDrop, &avg.UbersPerDrop, n)
+	setCumAvgIntFloat(stat.Airshots, &avg.Airshots, n)
+	db.DB.Save(avg)
+}
 
-			err := tx.Model(&Stat{}).Where("player_id = ? AND class = ?", id, class).Find(&stats).Error
-			if err != nil {
-				log.Println(err)
-			}
+func setCumAvg(newPoint float64, avg *float64, n int) {
+	*avg = (newPoint + float64(n)*(*avg)) / float64(n+1)
+}
 
-			if len(stats) == 0 {
-				continue
-			}
+func setCumAvgInt(newPoint int, avg *int, n int) {
+	*avg = (newPoint + n*(*avg)) / (n + 1)
+}
 
-			for _, stat := range stats {
-				final.DPM += stat.DPM / float64(len(stats))
-				final.Class = stat.Class
-				final.Kills += stat.Kills / len(stats)
-				final.Deaths += stat.Deaths / len(stats)
-				final.KD += stat.KD / float64(len(stats))
-				final.UbersPerDrop += stat.UbersPerDrop / float64(len(stats))
-				final.Airshots += float64(stat.Airshots) / float64(len(stats))
-				final.Drops += float64(stat.Drops) / float64(len(stats))
-			}
-
-			tx.Where("player_id = ? AND class = ?", id, class).Delete(&AvgStats{})
-			tx.Save(&final)
-		}
-
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		log.Println(err)
-	}
+func setCumAvgIntFloat(newPoint int, avg *float64, n int) {
+	*avg = (float64(newPoint) + float64(n)*(*avg)) / float64(n+1)
 }
 
 func GetClassStats(class string) []AvgStats {
@@ -143,12 +136,6 @@ func GetPlayerStats(playerID uint) []Stat {
 	}
 
 	return stats
-}
-
-func GetAllPlayers() []Player {
-	var players []Player
-	db.DB.Find(&players)
-	return players
 }
 
 func GetAllClassStats() []AllClassStat {
