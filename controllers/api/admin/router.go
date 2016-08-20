@@ -11,4 +11,7 @@ func init() {
 
 	http.HandleFunc("/api/admin/set_live", setLive)
 	http.HandleFunc("/api/admin/unset_live", unsetLive)
+
+	http.HandleFunc("/api/admin/set_wins", setWins)
+	http.HandleFunc("/api/admin/set_losses", setLosses)
 }
