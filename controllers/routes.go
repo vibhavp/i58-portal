@@ -15,6 +15,7 @@ func init() {
 	})
 	http.HandleFunc("/admin", serveAdmin)
 	http.HandleFunc("/api/login", api.Login)
+	http.HandleFunc("/api/logout", api.Logout)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/",
 		http.FileServer(http.Dir("./views/assets"))))
