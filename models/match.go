@@ -6,10 +6,14 @@ import (
 )
 
 type Match struct {
-	ID         uint   `gorm:"primary_key" json:"-"`
-	LogsID     int    `sql:"not null;unique"`
-	Team1      string `sql:"not null"`
-	Team2      string `sql:"not null"`
+	ID     uint `gorm:"primary_key" json:"-"`
+	LogsID int  `sql:"not null;unique"`
+
+	Team1ID uint `sql:"not null"`
+	Team1   Team `gorm:"ForeignKey:Team1ID"`
+	Team2ID uint `sql:"not null"`
+	Team2   Team `gorm:"ForeignKey:Team2ID"`
+
 	Stage      string `sql:"not null"`
 	MatchPage  string `sql:"not null"`
 	Live       bool
@@ -18,7 +22,8 @@ type Match struct {
 
 func GetAllMatches() []Match {
 	var matches []Match
-	db.DB.Preload("Highlights").Find(&matches)
+	db.DB.Preload("Highlights").Preload("Team1").Preload("Team2").
+		Find(&matches)
 	return matches
 }
 
@@ -40,11 +45,13 @@ func UnsetMatchLive(matchID int) error {
 }
 
 func AddMatch(logsID int, team1, team2, stage, page string) error {
+	team1ID, team2ID := getTeam(team1), getTeam(team2)
+
 	if exists(logsID) {
 		return db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
-			Update(map[string]string{
-				"team1":      team1,
-				"team2":      team2,
+			Update(map[string]interface{}{
+				"team1_id":   team1ID,
+				"team2_id":   team2ID,
 				"stage":      stage,
 				"match_page": page,
 			}).Error
@@ -52,8 +59,8 @@ func AddMatch(logsID int, team1, team2, stage, page string) error {
 
 	err := db.DB.Create(&Match{
 		LogsID:    logsID,
-		Team1:     team1,
-		Team2:     team2,
+		Team1ID:   team1ID,
+		Team2ID:   team2ID,
 		Stage:     stage,
 		MatchPage: page,
 	}).Error
@@ -117,10 +124,10 @@ func addStats(logsID int) error {
 			}
 
 			db.DB.Save(stat)
+			stat.addAvg()
 		}
 
 	}
 
-	UpdateAvgStats(updatedIDs)
 	return nil
 }
