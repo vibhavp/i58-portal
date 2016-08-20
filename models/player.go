@@ -8,7 +8,9 @@ type Player struct {
 	ID      uint   `gorm:"primary_key" json:"id"`
 	Name    string `json:"name"`
 	SteamID string `sql:"not null;unique" json:"-"`
-	Team    string `json:"team"`
+
+	TeamID uint
+	Team   Team `gorm:"ForeignKey:TeamID"`
 }
 
 func getOrCreatePlayerID(steamID string, names map[string]string) uint {
@@ -31,15 +33,15 @@ func getOrCreatePlayerID(steamID string, names map[string]string) uint {
 
 func SetPlayerInfo(steamID, name, team string) error {
 	return db.DB.Model(&Player{}).Where("steam_id = ?", steamID).
-		Update(map[string]string{
+		Update(map[string]interface{}{
 			"name":     name,
-			"team":     team,
+			"team_id":  getTeam(team),
 			"steam_id": steamID,
 		}).Error
 }
 
-func GetAllPlayer() []*Player {
-	var players []*Player
-	db.DB.Find(&players)
+func GetAllPlayers() []Player {
+	var players []Player
+	db.DB.Preload("Team").Find(&players)
 	return players
 }
