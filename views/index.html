@@ -60,6 +60,10 @@
 		    <nav class="mdl-navigation">
 			<a class="mdl-navigation__link" href="/admin" target="_blank">Admin</a>
 		    </nav>
+		    <nav class="mdl-navigation">
+			<a class="mdl-navigation__link" href="/api/logout">Logout</a>
+		    </nav>
+
 		    {{end}}
 		</div>
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
@@ -184,7 +188,7 @@ class="mdl-button mdl-js-button">
 					{{range $player := $team.Players}}
 					<li class="mdl-list__item">
 					    <span class="mdl-list__item-primary-content">
-						{{$player.Name}}
+						<a href="/stats?playerid={{$player.ID}}">{{$player.Name}}</a>
 					    </span>
 					</li>
 					{{end}}
