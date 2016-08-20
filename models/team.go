@@ -23,3 +23,15 @@ func GetAllTeams() []Team {
 	db.DB.Preload("Players").Find(&teams)
 	return teams
 }
+
+func SetWins(teamID uint, wins int) error {
+	return db.DB.Model(&Team{}).
+		Where("id = ?", teamID).
+		Update("wins", wins).Error
+}
+
+func SetLosses(teamID uint, losses int) error {
+	return db.DB.Model(&Team{}).
+		Where("id = ?", teamID).
+		Update("losses", losses).Error
+}
