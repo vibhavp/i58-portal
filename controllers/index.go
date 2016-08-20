@@ -72,10 +72,18 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func serveAdmin(w http.ResponseWriter, r *http.Request) {
+	loggedIn := admin.IsLoggedIn(r)
+	var allPlayers *[]models.Player
+
+	if loggedIn {
+		p := models.GetAllPlayers()
+		allPlayers = &p
+	}
+
 	page := template.Must(template.ParseFiles("views/admin.html"))
 	err := page.Execute(w, map[string]interface{}{
-		"notLoggedIn": !admin.IsLoggedIn(r),
-		"players":     models.GetAllPlayers(),
+		"notLoggedIn": !loggedIn,
+		"players":     allPlayers,
 	})
 	if err != nil {
 		log.Println(err)
