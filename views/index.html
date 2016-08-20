@@ -2,6 +2,7 @@
 {{$classMap := .classMap}}
 <html>
     <head>
+	<meta charset="UTF-8">
 	<title>i58 TF2 Portal</title>
 	<meta charset="utf-8" />
 	<style>
@@ -64,6 +65,7 @@
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 		    <a href="#matches" class="mdl-layout__tab">Matches</a>
 		    <a href="#stats" class="mdl-layout__tab is-active">Stats</a>
+		    <a href="#teams" class="mdl-layout__tab">Teams</a>
 		    <a href="#social" class="mdl-layout__tab">Social</a>
 		</div>
 	    </header>
@@ -80,7 +82,7 @@
 				    Live
 				</div>
 				{{end}}
-				<span><i>{{$match.Team1}}</i>&nbsp;vs&nbsp;<i>{{$match.Team2}}</i></span>
+				<span><i>{{$match.Team1.Name}}</i>&nbsp;vs&nbsp;<i>{{$match.Team2.Name}}</i></span>
 				<span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
 			    </span>
 			    <span class="mdl-list__item-secondary-action">
@@ -92,7 +94,7 @@
 				</button>
 				{{if $match.Highlights}}
 				<button id="highlights-{{$match.ID}}"
-					class="mdl-button mdl-js-button">
+class="mdl-button mdl-js-button">
 				    Highlights
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
@@ -106,14 +108,14 @@
 				{{end}}
 				{{if $loggedIn}}
 				<button id="admin-{{$match.ID}}"
-					class="mdl-button mdl-js-button">
+class="mdl-button mdl-js-button">
 				    Admin
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 				    for="admin-{{$match.ID}}">
 				    <li class="mdl-menu__item">
 					<button id="live-{{$match.ID}}"
-						class="mdl-button mdl-js-button">
+class="mdl-button mdl-js-button">
 					    {{if $match.Live}}Unset live{{else}}
 					    Set Live{{end}}
 					</button>
@@ -122,7 +124,7 @@
 				<script>
 				 $("#live-{{$match.ID}}").click(function() {
 				     $.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
-					    {match_id: {{$match.ID}}})
+					   {match_id: {{$match.ID}}})
 				      .fail(function(data) {
 					  alert("Error: "+JSON.stringify(data))
 				      })
@@ -145,21 +147,51 @@
 			    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
 				<div class="mdl-card__title"></div>
 				<div class="mdl-card__supporting-text">
+				    {{if eq $class "medic"}}
+				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
+				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Stat}}</h3>
+				    <h5 class="stat-card"> Highest Ubers Per Drops</h5>
+				    {{else}}
 				    <h3 class="stat-card">{{$info.HighestDPM.Player.Name}}</h3>
 				    <h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
 				    <h5 class="stat-card"> Highest {{$className}} DPM</h5>
+				    {{end}}
 				</div>
 				<p>
-				<div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
-				    <button class="mdl-button mdl-js-button">
-					<a href="/stats?class={{$class}}">
-					    <p class="stat-card">{{$className}} Stats</p></a>
+				    <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
+					<button class="mdl-button mdl-js-button">
+					    <a href="/stats?class={{$class}}">
+						<p class="stat-card">{{$className}} Stats</p></a>
 					</button>
-				</div>
+				    </div>
 				</p>
 			    </div>
 			</div>
 			{{end}}
+			{{end}}
+		    </div>
+		</section>
+		<section class="mdl-layout__tab-panel" id="teams">
+		    <div class="mdl-grid">
+			{{range $team := .teams}}
+			<div class="mdl-cell mdl-cell--5-col">
+			    <div class="mdl-card mdl-shadow--2dp">
+				<div class="mdl-card__title">
+				    <h2 class="mdl-card__title-text">{{$team.Name}}</h2>
+				</div>
+				<div class="mdl-card__supporting-text">
+				    <ul class="mdl-list">
+					{{range $player := $team.Players}}
+					<li class="mdl-list__item">
+					    <span class="mdl-list__item-primary-content">
+						{{$player.Name}}
+					    </span>
+					</li>
+					{{end}}
+				    </ul>
+				</div>
+			    </div>
+			</div>
 			{{end}}
 		    </div>
 		</section>
