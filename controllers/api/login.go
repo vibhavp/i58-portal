@@ -3,6 +3,7 @@ package api
 import (
 	"crypto/sha512"
 	"encoding/hex"
+	"log"
 	"net/http"
 	"time"
 
@@ -33,6 +34,20 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 	})
 
+	log.Printf("New login from %s", r.RemoteAddr)
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "login",
+		Path:     "/",
+		Value:    "",
+		HttpOnly: true,
+		MaxAge:   -1,
+	})
+
+	log.Printf("%s logged out", r.RemoteAddr)
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
 
