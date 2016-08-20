@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/vibhavp/i58-portal/models"
 )
@@ -23,31 +24,31 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 	}
 	query := r.Form
 
-	url := query.Get("url")
+	url := strings.TrimSpace(query.Get("url"))
 	if url == "" || !reValidURL.MatchString(url) {
 		http.Error(w, "Missing/Invalid logs URL", http.StatusBadRequest)
 		return
 	}
 
-	team1 := query.Get("team1")
+	team1 := strings.TrimSpace(query.Get("team1"))
 	if team1 == "" {
 		http.Error(w, "Missing team1", http.StatusBadRequest)
 		return
 	}
 
-	team2 := query.Get("team2")
+	team2 := strings.TrimSpace(query.Get("team2"))
 	if team2 == "" {
 		http.Error(w, "Missing team2", http.StatusBadRequest)
 		return
 	}
 
-	stage := query.Get("stage")
+	stage := strings.TrimSpace(query.Get("stage"))
 	if stage == "" {
 		http.Error(w, "Missing stage", http.StatusBadRequest)
 		return
 	}
 
-	page := query.Get("page")
+	page := strings.TrimSpace(query.Get("page"))
 	if page == "" {
 		http.Error(w, "Missing page", http.StatusBadRequest)
 		return
@@ -125,19 +126,19 @@ func addPlayer(w http.ResponseWriter, r *http.Request) {
 	}
 	query := r.Form
 
-	steamID := query.Get("steamid")
+	steamID := strings.TrimSpace(query.Get("steamid"))
 	if steamID == "" {
 		http.Error(w, "Missing SteamID", http.StatusBadRequest)
 		return
 	}
 
-	name := query.Get("name")
+	name := strings.TrimSpace(query.Get("name"))
 	if name == "" {
 		http.Error(w, "Missing Name", http.StatusBadRequest)
 		return
 	}
 
-	team := query.Get("team")
+	team := strings.TrimSpace(query.Get("team"))
 	if team == "" {
 		http.Error(w, "Missing Team", http.StatusBadRequest)
 		return
@@ -147,4 +148,6 @@ func addPlayer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	fmt.Fprint(w, "Added!")
 }
