@@ -36,7 +36,7 @@ window.addEventListener('load', function () {
 	for (i in data) {
 	    if (Math.floor(data[i][stat]) != 0) {
 		var label = data[i].player.name;
-		if (data[i].player.team != "") {
+		if (data[i].player.team != undefined) {
 		    label += " ("+data[i].player.team+')';
 		}
 		labels.push();
