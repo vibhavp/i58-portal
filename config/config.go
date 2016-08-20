@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/kelseyhightower/envconfig"
 )
 
