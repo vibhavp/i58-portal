@@ -26,10 +26,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:    "login",
-		Path:    "/",
-		Value:   LoginHash(config.Config.Username, config.Config.Password),
-		Expires: time.Now().Add(30 * 24 * time.Hour),
+		Name:     "login",
+		Path:     "/",
+		Value:    LoginHash(config.Config.Username, config.Config.Password),
+		Expires:  time.Now().Add(30 * 24 * time.Hour),
+		HttpOnly: true,
 	})
 
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
