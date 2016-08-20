@@ -16,7 +16,7 @@
 		    </div>
 
 		    <div class="mdl-card__supporting-text">
-			<form action="/api/login" target="_blank" method="post">
+			<form action="/api/login" method="post">
 			    <div class="mdl-textfield mdl-js-textfield">
 				<input class="mdl-textfield__input" id="username" type="text" name="username" required>
 				<label class="mdl-textfield__label" for="username">Username</label>
@@ -123,6 +123,7 @@
 		</div>
 	    </div>
 	    {{end}}
+	    {{if .players}}
 	    <div class="mdl-cell mdl-cell--5-col">
 		<h3> Player List </h3>
 		<table class="mdl-data-table mdl-js-data-table">
@@ -144,6 +145,7 @@
 		    </tbody>
 		</table>
 	    </div>
+	    {{end}}
 	</div>
     </body>
 </html>
