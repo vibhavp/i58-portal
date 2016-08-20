@@ -52,7 +52,7 @@ func newClassMap() map[string]highest {
 
 		stats[class] = highest{classes[class],
 			stat{int(dpm.DPM), dpm.Player},
-			stat{ubersPerDrops.UbersPerDrop, ubersPerDrops.Player}}
+			stat{int(ubersPerDrops.UbersPerDrop), ubersPerDrops.Player}}
 	}
 	return stats
 }
