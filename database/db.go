@@ -17,5 +17,10 @@ func Open() {
 		log.Fatal(err)
 	}
 
-	DB.DB().SetMaxOpenConns(1)
+	log.Printf("Using database driver %s", config.Config.DBDriver)
+
+	if config.Config.DBDriver == "sqlite3" {
+		log.Println("Setting max open connections to 1")
+		DB.DB().SetMaxOpenConns(1)
+	}
 }
