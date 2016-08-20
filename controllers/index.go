@@ -15,10 +15,9 @@ type stat struct {
 }
 
 type highest struct {
-	Name            string
-	HighestDPM      stat
-	HighestKD       stat
-	HighestAirshots stat
+	Name                string
+	HighestDPM          stat
+	HighestUbersPerDrop stat
 }
 
 var classes = map[string]string{
@@ -40,17 +39,20 @@ func newClassMap() map[string]highest {
 
 	for class, _ := range classes {
 		dpm := models.GetHighestStat("dpm", class)
-		kd := models.GetHighestStat("kd", class)
-		var as models.AvgStats
-
-		if class == "demoman" || class == "soldier" {
-			as = *models.GetHighestStat("airshots", class)
+		var ubersPerDrops models.AvgStats
+		if class == "medic" {
+			ubersPerDrops = *models.GetHighestStat("ubers_per_drop", "medic")
 		}
+
+		//var as models.AvgStats
+
+		// if class == "demoman" || class == "soldier" {
+		// 	as = *models.GetHighestStat("airshots", class)
+		// }
 
 		stats[class] = highest{classes[class],
 			stat{int(dpm.DPM), dpm.Player},
-			stat{kd.KD, kd.Player},
-			stat{as.Airshots, as.Player}}
+			stat{ubersPerDrops.UbersPerDrop, ubersPerDrops.Player}}
 	}
 	return stats
 }
@@ -62,6 +64,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		"classMap": classes,
 		"matches":  models.GetAllMatches(),
 		"loggedIn": admin.IsLoggedIn(r),
+		"teams":    models.GetAllTeams(),
 	})
 	if err != nil {
 		log.Println(err)
