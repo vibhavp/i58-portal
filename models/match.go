@@ -54,11 +54,19 @@ func AddMatch(logsID int, team1, team2, stage, page string,
 	if exists(logsID) {
 		return db.DB.Model(&Match{}).Where("logs_id = ?", logsID).
 			Update(map[string]interface{}{
-				"team1_id":   team1ID,
-				"team2_id":   team2ID,
-				"stage":      stage,
-				"match_page": page,
+				"team1_id":    team1ID,
+				"team1_score": team1Score,
+				"team2_id":    team2ID,
+				"team2_score": team1Score,
+				"stage":       stage,
+				"match_page":  page,
 			}).Error
+	}
+
+	if team1Score > team2Score {
+		SetWins(team1ID, team1Score)
+	} else if team2Score > team1Score {
+		SetWins(team2ID, team2Score)
 	}
 
 	err := db.DB.Create(&Match{
