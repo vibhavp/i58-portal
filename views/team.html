@@ -15,14 +15,16 @@
     </head>
     <body>
 	{{$selfID := .selfTeamID}}
+	<h2>{{.teamName}}</h2>
+	<h4>Matches Played</h4>
 	<ul class="mdl-list mdl-shadow--2dp">
 	    {{range $match := .matches}}
 	    <li class="list-item mdl-list__item mdl-list__item--two-line">
 		<span class="mdl-list__item-primary-content">
 		    {{if eq $selfID $match.Team1ID}}
-		    vs {{$match.Team2.Name}}
+		    <i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i>
 		    {{else}}
-		    vs {{$match.Team1.Name}}
+		    <i>{{$match.Team2.Name}}</i> vs <i>{{$match.Team1.Name}}</i>
 		    {{end}}
 		    <span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
 		</span>
@@ -30,7 +32,7 @@
 		    {{if eq $selfID $match.Team1ID}}
 		    {{$match.Team1Score}}-{{$match.Team2Score}}
 		    {{else}}
-		    {{$match.Team2Score}}-{{$match.Team2Score}}
+		    {{$match.Team2Score}}-{{$match.Team1Score}}
 		    {{end}}
 		</span>
 		<span class="mdl-list__item-secondary-action">
@@ -54,6 +56,16 @@
 			{{end}}
 		    </ul>
 		    {{end}}
+		</span>
+	    </li>
+	    {{end}}
+	</ul>
+	<h4>Players</h4>
+	<ul class="mdl-list">
+	    {{range $player := .players}}
+	    <li class="list-item mdl-list__item mdl-list__item--three-line">
+		<span class="mdl-list__item-primary-content">
+		    <a href="/stats?playerid={{$player.ID}}">{{$player.Name}}</a>
 		</span>
 	    </li>
 	    {{end}}

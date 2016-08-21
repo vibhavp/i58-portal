@@ -150,13 +150,7 @@ func addPlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	team := strings.TrimSpace(query.Get("team"))
-	if team == "" {
-		http.Error(w, "Missing Team", http.StatusBadRequest)
-		return
-	}
-
-	if err := models.SetPlayerInfo(steamID, name, team); err != nil {
+	if err := models.SetPlayerInfo(steamID, name); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

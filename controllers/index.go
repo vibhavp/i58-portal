@@ -101,7 +101,9 @@ func serveTeam(w http.ResponseWriter, r *http.Request) {
 	}
 	err = teamPage.Execute(w, map[string]interface{}{
 		"selfTeamID": teamID,
+		"teamName":   models.GetTeamName(uint(teamID)),
 		"matches":    models.GetMatches(uint(teamID)),
+		"players":    models.GetTeamPlayers(uint(teamID)),
 	})
 	if err != nil {
 		log.Println(err)

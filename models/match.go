@@ -64,9 +64,11 @@ func AddMatch(logsID int, team1, team2, stage, page string,
 	}
 
 	if team1Score > team2Score {
-		SetWins(team1ID, team1Score)
+		incWins(team1ID)
+		incLosses(team2ID)
 	} else if team2Score > team1Score {
-		SetWins(team2ID, team2Score)
+		incWins(team2ID)
+		incLosses(team1ID)
 	}
 
 	err := db.DB.Create(&Match{
@@ -82,10 +84,10 @@ func AddMatch(logsID int, team1, team2, stage, page string,
 		return err
 	}
 
-	return addStats(logsID)
+	return addStats(logsID, team1ID, team2ID)
 }
 
-func addStats(logsID int) error {
+func addStats(logsID int, team1ID, team2ID uint) error {
 	logs, err := logstf.GetLogs(logsID)
 	if err != nil {
 		return err
@@ -94,7 +96,15 @@ func addStats(logsID int) error {
 	var updatedIDs []uint
 
 	for steamID, stats := range logs.Players {
-		id := getOrCreatePlayerID(steamID, logs.Names)
+		var teamID uint
+		team := logs.Players[steamID].Team
+
+		if team == "Blue" {
+			teamID = team1ID
+		} else if team == "Red" {
+			teamID = team2ID
+		}
+		id := getOrCreatePlayerID(steamID, logs.Names[steamID], teamID)
 		updatedIDs = append(updatedIDs, id)
 
 		for _, cstats := range stats.ClassStats {

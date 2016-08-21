@@ -18,9 +18,15 @@ func getTeam(name string) uint {
 	return team.ID
 }
 
+func GetTeamName(teamID uint) string {
+	var name string
+	db.DB.Model(&Team{}).Select("name").Where("id = ?", teamID).Row().Scan(&name)
+	return name
+}
+
 func GetAllTeams() []Team {
 	var teams []Team
-	db.DB.Preload("Players").Find(&teams)
+	db.DB.Preload("Players").Order("wins DESC").Find(&teams)
 	return teams
 }
 
@@ -42,4 +48,12 @@ func GetMatches(teamID uint) []Match {
 		Where("team1_id = ? OR team2_id = ?", teamID, teamID).
 		Find(&matches)
 	return matches
+}
+
+func incWins(teamID uint) {
+	db.DB.Exec("UPDATE teams SET wins = wins + 1 WHERE id = ?", teamID)
+}
+
+func incLosses(teamID uint) {
+	db.DB.Exec("UPDATE teams SET losses = losses + 1 WHERE id = ?", teamID)
 }
