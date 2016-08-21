@@ -46,7 +46,9 @@ func UnsetMatchLive(matchID int) error {
 		Update("live", false).Error
 }
 
-func AddMatch(logsID int, team1, team2, stage, page string) error {
+func AddMatch(logsID int, team1, team2, stage, page string,
+	team1Score, team2Score int) error {
+
 	team1ID, team2ID := getTeam(team1), getTeam(team2)
 
 	if exists(logsID) {
@@ -60,11 +62,13 @@ func AddMatch(logsID int, team1, team2, stage, page string) error {
 	}
 
 	err := db.DB.Create(&Match{
-		LogsID:    logsID,
-		Team1ID:   team1ID,
-		Team2ID:   team2ID,
-		Stage:     stage,
-		MatchPage: page,
+		LogsID:     logsID,
+		Team1ID:    team1ID,
+		Team2ID:    team2ID,
+		Team1Score: team1Score,
+		Team2Score: team2Score,
+		Stage:      stage,
+		MatchPage:  page,
 	}).Error
 	if err != nil {
 		return err

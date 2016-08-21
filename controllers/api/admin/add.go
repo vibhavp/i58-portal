@@ -36,9 +36,21 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	team1Score, err := strconv.Atoi(query.Get("team1_score"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	team2 := strings.TrimSpace(query.Get("team2"))
 	if team2 == "" {
 		http.Error(w, "Missing team2", http.StatusBadRequest)
+		return
+	}
+
+	team2Score, err := strconv.Atoi(query.Get("team2_score"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -61,7 +73,7 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.AddMatch(id, team1, team2, stage, page)
+	err = models.AddMatch(id, team1, team2, stage, page, team1Score, team2Score)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
