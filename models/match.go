@@ -9,10 +9,12 @@ type Match struct {
 	ID     uint `gorm:"primary_key" json:"-"`
 	LogsID int  `sql:"not null;unique"`
 
-	Team1ID uint `sql:"not null"`
-	Team1   Team `gorm:"ForeignKey:Team1ID"`
-	Team2ID uint `sql:"not null"`
-	Team2   Team `gorm:"ForeignKey:Team2ID"`
+	Team1ID    uint `sql:"not null"`
+	Team1      Team `gorm:"ForeignKey:Team1ID"`
+	Team1Score int
+	Team2ID    uint `sql:"not null"`
+	Team2      Team `gorm:"ForeignKey:Team2ID"`
+	Team2Score int
 
 	Stage      string `sql:"not null"`
 	MatchPage  string `sql:"not null"`
