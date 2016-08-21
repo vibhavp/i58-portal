@@ -1,0 +1,62 @@
+<html>
+    <head>
+	<style>
+	 .list-item {
+	    height: 1px !important;
+	 }
+	</style>
+	<meta charset="UTF-8">
+	<title>i58 TF2 Portal</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.deep_purple-deep_orange.min.css"/>
+	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+	{{$selfID := .selfTeamID}}
+	<ul class="mdl-list mdl-shadow--2dp">
+	    {{range $match := .matches}}
+	    <li class="list-item mdl-list__item mdl-list__item--two-line">
+		<span class="mdl-list__item-primary-content">
+		    {{if eq $selfID $match.Team1ID}}
+		    vs {{$match.Team2.Name}}
+		    {{else}}
+		    vs {{$match.Team1.Name}}
+		    {{end}}
+		    <span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
+		</span>
+		<span class="mdl-list__item-secondary-info">
+		    {{if eq $selfID $match.Team1ID}}
+		    {{$match.Team1Score}}-{{$match.Team2Score}}
+		    {{else}}
+		    {{$match.Team2Score}}-{{$match.Team2Score}}
+		    {{end}}
+		</span>
+		<span class="mdl-list__item-secondary-action">
+		    <button class="mdl-button mdl-js-button">
+			<a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
+		    </button>
+		    <button class="mdl-button mdl-js-button">
+			<a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
+		    </button>
+		    {{if $match.Highlights}}
+		    <button id="highlights-{{$match.ID}}"
+			    class="mdl-button mdl-js-button">
+			Highlights
+		    </button>
+		    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+			for="highlights-{{$match.ID}}">
+			{{range $highlight := $match.Highlights}}
+			<li class="mdl-menu__item">
+			    <a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
+			</li>
+			{{end}}
+		    </ul>
+		    {{end}}
+		</span>
+	    </li>
+	    {{end}}
+	</ul>
+    </body>
+</html>
