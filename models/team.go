@@ -35,3 +35,11 @@ func SetLosses(teamID uint, losses int) error {
 		Where("id = ?", teamID).
 		Update("losses", losses).Error
 }
+
+func GetMatches(teamID uint) []Match {
+	var matches []Match
+	db.DB.Preload("Team1").Preload("Team2").
+		Where("team1_id = ? OR team2_id = ?", teamID, teamID).
+		Find(&matches)
+	return matches
+}
