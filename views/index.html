@@ -4,7 +4,6 @@
     <head>
 	<meta charset="UTF-8">
 	<title>i58 TF2 Portal</title>
-	<meta charset="utf-8" />
 	<style>
 	 hr.style1 {
 	     border-width: 1px;
@@ -25,6 +24,10 @@
 	     word-wrap: break-word;
 	     color: #000000
 	 }
+	 table.teams {
+	     width: 100%;
+	     /* height: 100%; */
+	 }
 	 p.stat-card {
 	     text-align: center;
 	 }
@@ -44,6 +47,7 @@
 	 }
 	 {{end}}
 	</style>
+	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.deep_purple-deep_orange.min.css"/>
 	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
@@ -89,6 +93,9 @@
 				<span><i>{{$match.Team1.Name}}</i>&nbsp;vs&nbsp;<i>{{$match.Team2.Name}}</i></span>
 				<span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
 			    </span>
+			    <span class="mdl-list__item-secondary-info">
+				<!-- TEAM 1 SCORE - TEAM 2 SCORE -->
+			    </span>
 			    <span class="mdl-list__item-secondary-action">
 				<button class="mdl-button mdl-js-button">
 				    <a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
@@ -115,7 +122,7 @@ class="mdl-button mdl-js-button">
 class="mdl-button mdl-js-button">
 				    Admin
 				</button>
-				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
 				    for="admin-{{$match.ID}}">
 				    <li class="mdl-menu__item">
 					<button id="live-{{$match.ID}}"
@@ -135,7 +142,6 @@ class="mdl-button mdl-js-button">
 				 });
 				</script>
 				{{end}}
-				</button>
 			    </span>
 			</li>
 			<hr class="style1">{{end}}
@@ -176,28 +182,23 @@ class="mdl-button mdl-js-button">
 		    </div>
 		</section>
 		<section class="mdl-layout__tab-panel" id="teams">
-		    <div class="mdl-grid">
-			{{range $team := .teams}}
-			<div class="mdl-cell mdl-cell--5-col">
-			    <div class="mdl-card mdl-shadow--2dp">
-				<div class="mdl-card__title">
-				    <h2 class="mdl-card__title-text">{{$team.Name}}</h2>
-				</div>
-				<div class="mdl-card__supporting-text">
-				    <ul class="mdl-list">
-					{{range $player := $team.Players}}
-					<li class="mdl-list__item">
-					    <span class="mdl-list__item-primary-content">
-						<a href="/stats?playerid={{$player.ID}}">{{$player.Name}}</a>
-					    </span>
-					</li>
-					{{end}}
-				    </ul>
-				</div>
-			    </div>
-			</div>
+		    <table class="mdl-data-table mdl-js-data-table teams">
+			<thead>
+			    <tr>
+				<th class="mdl-data-table__cell--non-numeric">Team</th>
+				<th>Wins</th>
+				<th>Losses</th>
+			    </tr>
+			</thead>
+			<tbody>
+			    {{range $team := .teams}}
+			    <tr>
+				<td class="mdl-data-table__cell--non-numeric"><a href="/team?id={{$team.ID}}">{{$team.Name}}</a></td>
+				<td>{{$team.Wins}}</td>
+				<td>{{$team.Losses}}</td>
 			{{end}}
-		    </div>
+			</tbody>
+		    </table>
 		</section>
 		<section class="mdl-layout__tab-panel" id="social">
 		    <!-- SOCIAL -->
