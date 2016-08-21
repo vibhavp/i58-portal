@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/vibhavp/i58-portal/controllers/api/admin"
 	"github.com/vibhavp/i58-portal/models"
@@ -84,6 +85,23 @@ func serveAdmin(w http.ResponseWriter, r *http.Request) {
 	err := page.Execute(w, map[string]interface{}{
 		"notLoggedIn": !loggedIn,
 		"players":     allPlayers,
+	})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func serveTeam(w http.ResponseWriter, r *http.Request) {
+	teamPage := template.Must(template.ParseFiles("views/team.html"))
+	query := r.URL.Query()
+	teamID, err := strconv.Atoi(query.Get("id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	err = teamPage.Execute(w, map[string]interface{}{
+		"selfTeamID": teamID,
+		"matches":    models.GetMatches(uint(teamID)),
 	})
 	if err != nil {
 		log.Println(err)

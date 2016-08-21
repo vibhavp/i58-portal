@@ -13,6 +13,10 @@ func init() {
 	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./views/draw.html")
 	})
+	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./views/assets/favicon.ico")
+	})
+	http.HandleFunc("/team", serveTeam)
 	http.HandleFunc("/admin", serveAdmin)
 	http.HandleFunc("/api/login", api.Login)
 	http.HandleFunc("/api/logout", api.Logout)
