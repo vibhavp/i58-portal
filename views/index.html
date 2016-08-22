@@ -1,210 +1,259 @@
 {{$loggedIn := .loggedIn}}
+{{$beforeEvent := true}}
 {{$classMap := .classMap}}
 <html>
-    <head>
+	<head>
 	<meta charset="UTF-8">
 	<title>i58 TF2 Portal</title>
 	<style>
-	 hr.style1 {
-	     border-width: 1px;
-	     color: rgba(255, 255, 255, 0.12);
-	 }
-	 .header-layer {
-	     color: rgba(255, 255, 255, 0.12);
-	 }
-	 .list-item {
-	    height: 1px !important;
-	 }
-
-	 h5.stat-card {
-	     text-align: center;
-	 }
-	 h3.stat-card {
-	     text-align: center;
-	     word-wrap: break-word;
-	     color: #000000
-	 }
-	 table.teams {
-	     width: 100%;
-	     /* height: 100%; */
-	 }
-	 p.stat-card {
-	     text-align: center;
-	 }
-	 {{range $class, $info := .classes}}
-	 .stat-card-{{$class}}.mdl-card {
-	     width: 191px;
-	 }
-	 .stat-card-{{$class}} > .mdl-card__title {
-	     height: 254px;
-	     width: 191px;
-	     background: url('assets/{{$class}}.jpg') center;
-	 }
-	 .stat-card-{{$class}} > .mdl-card__actions {
-	     align-items: center;
-	     display: flex;
-	     box-sizing:border-box;
-	 }
-	 {{end}}
+	hr.style1 {
+		border-width: 1px;
+		color: rgba(255, 255, 255, 0.12);
+	}
+	.header-layer {
+		color: rgba(255, 255, 255, 0.12);
+	}
+	.list-item {
+		height: 1px !important;
+	}
+	h5.stat-card {
+		text-align: center;
+	}
+	h3.stat-card {
+		text-align: center;
+		word-wrap: break-word;
+		color: #000000
+	}
+	table.teams {
+		width: 100%;
+		/* height: 100%; */
+	}
+	p.stat-card {
+		text-align: center;
+	}
+	{{range $class, $info := .classes}}
+	.stat-card-{{$class}}.mdl-card {
+		width: 191px;
+	}
+	.stat-card-{{$class}} > .mdl-card__title {
+		height: 254px;
+		width: 191px;
+		background: url('assets/{{$class}}.jpg') center;
+	}
+	.stat-card-{{$class}} > .mdl-card__actions {
+		align-items: center;
+		display: flex;
+		box-sizing:border-box;
+	}
+	{{end}}
+	.mdl-layout__tab-panel {
+		width: 100%;
+		max-width: 720px;
+		margin: 0 auto;
+	}
 	</style>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.deep_purple-deep_orange.min.css"/>
 	<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    </head>
-    <body>
+	</head>
+	<body>
 	<div class="header-layer mdl-layout mdl-js-layout mdl-layout--fixed-header
-		    mdl-layout--fixed-tabs">
-	    <header class="mdl-layout__header">
+			mdl-layout--fixed-tabs">
+		<header class="mdl-layout__header">
 		<div class="mdl-layout__header-row">
-		    <!-- Title -->
-		    <span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>
-		    {{if $loggedIn}}
-		    <nav class="mdl-navigation">
+			<!-- Title -->
+			<span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>
+			{{if $loggedIn}}
+			<nav class="mdl-navigation">
 			<a class="mdl-navigation__link" href="/admin" target="_blank">Admin</a>
-		    </nav>
-		    <nav class="mdl-navigation">
+			</nav>
+			<nav class="mdl-navigation">
 			<a class="mdl-navigation__link" href="/api/logout">Logout</a>
-		    </nav>
-
-		    {{end}}
+			</nav>
+			{{end}}
 		</div>
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-		    <a href="#matches" class="mdl-layout__tab">Matches</a>
-		    <a href="#stats" class="mdl-layout__tab is-active">Stats</a>
-		    <a href="#teams" class="mdl-layout__tab">Teams</a>
-		    <a href="#social" class="mdl-layout__tab">Social</a>
+			<a href="#index" class="mdl-layout__tab is-active">Index</a>
+			<a href="#matches" class="mdl-layout__tab">Matches</a>
+			<a href="#stats" class="mdl-layout__tab">Stats</a>
+			<a href="#teams" class="mdl-layout__tab">Teams</a>
+			<a href="#social" class="mdl-layout__tab">Social</a>
 		</div>
-	    </header>
-	    <main class="mdl-layout__content">
+		</header>
+		<main class="mdl-layout__content">
+		<section class="mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
+			{{if $beforeEvent}}
+				<h2 id="countdown" style="text-align:center"></h2>
+			{{else}}
+				<iframe src="http://player.twitch.tv/?channel=truktruk" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+			{{end}}
+			<h1>i58</h1>
+			<p>... is the next installment of the <a href="https://insomniagamingfestival.com/i58/tournaments/event/team-fortress-2-2/">Insomnia Gaming LAN series</a> where the best competitive Team Fortress 2  teams from around the globe compete for the title of Worldwide Champions.</p>
+			<p>This year's notable participants include European leaders <a href="http://teamfortress.tv/35108">Crowns</a>, <a href="http://teamfortress.tv/35167">Full Tilt</a> and <a href="http://teamfortress.tv/35404">XENEX</a>, as well as the reappearance of the Australian community with <a href="http://teamfortress.tv/34210">Jasmine Tea</a>, and obviously, two time champions (although their roster has significantly changed), the Americans of <a href="http://teamfortress.tv/34929">Froyotech</a>.</p>
+			<p>The matchups are bound to be legendary, and to bring you coverage for these games is none other than a <a href="http://teamfortress.tv/35217">complete broadcasting crew from Teamfortress.TV</a> with timelessly famous members of the community, such as Admirable, Getawhale, CommanderX, Bren, Sideshow and even eXtine! Alongside Teamfortress.TV's video coverage on <a href="http://twitch.tv/teamfortresstv">twitch</a>, we're proud to announce i58.tf will provide updated logs, per-player stats, stream highlights and social media in real time.</p>
+			<p>The event will take place</p>
+			<ul>
+				<li>starting Friday August 26th with group stages,</li>
+				<li>through Saturday with playoffs up to semi-finals,</li>
+				<li>and ending on Sunday 28th, with the consolation finals and grand finals.</li>
+			</ul>
+			<p>Changes from throughout the year to the competitive gamemode of 6v6 will also be part of this I-series' gameplay, such as the addition of <a href="http://teamfortress.tv/29927">Phi's cp_reckoner_b3</a> and also updated or pro version of maps, such as cp_snakewater_u13, koth_product_rc8 and cp_granary_pro_rc4, but most importantly the in-game integration of Coaches (through <a href="https://github.com/fwdcp/CompCtrl/releases/tag/0.5.0">CompCtrl</a>).</p>
+			<p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
+			<p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
+			<p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
+			<p>Note: <em>i58.tf is not related to Teamfortress.TV, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>.</em></p>
+		</section>
 		<section class="mdl-layout__tab-panel" id="matches">
-		    <!-- MATCHES -->
-		    <ul class="list-item mdl-list">
+			<!-- MATCHES -->
+			<ul class="list-item mdl-list">
 			{{range $match := .matches}}
 			<li class="list-item mdl-list__item mdl-list__item--two-line">
-			    <span class="mdl-list__item-primary-content">
+				<span class="mdl-list__item-primary-content">
 				{{if $match.Live}}
 				<div id="live" class="icon material-icons mdl-list__item-icon">tv</div>
 				<div class="mdl-tooltip mdl-tooltip--large" for="live">
-				    Live
+					Live
 				</div>
 				{{end}}
 				<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i></span>
 				<span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
-			    </span>
-			    <span class="mdl-list__item-secondary-info">
+				</span>
+				<span class="mdl-list__item-secondary-info">
 				{{$match.Team1Score}}-{{$match.Team2Score}}
-			    </span>
-			    <span class="mdl-list__item-secondary-action">
+				</span>
+				<span class="mdl-list__item-secondary-action">
 				<button class="mdl-button mdl-js-button">
-				    <a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
+					<a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
 				</button>
 				<button class="mdl-button mdl-js-button">
-				    <a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
+					<a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
 				</button>
 				{{if $match.Highlights}}
 				<button id="highlights-{{$match.ID}}"
 class="mdl-button mdl-js-button">
-				    Highlights
+					Highlights
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
-				    for="highlights-{{$match.ID}}">
-				    {{range $highlight := $match.Highlights}}
-				    <li class="mdl-menu__item">
+					for="highlights-{{$match.ID}}">
+					{{range $highlight := $match.Highlights}}
+					<li class="mdl-menu__item">
 					<a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
-				    </li>
-				    {{end}}
+					</li>
+					{{end}}
 				</ul>
 				{{end}}
 				{{if $loggedIn}}
 				<button id="admin-{{$match.ID}}"
 class="mdl-button mdl-js-button">
-				    Admin
+					Admin
 				</button>
-				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-				    for="admin-{{$match.ID}}">
-				    <li class="mdl-menu__item">
+				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+					for="admin-{{$match.ID}}">
+					<li class="mdl-menu__item">
 					<button id="live-{{$match.ID}}"
 class="mdl-button mdl-js-button">
-					    {{if $match.Live}}Unset live{{else}}
-					    Set Live{{end}}
+						{{if $match.Live}}Unset live{{else}}
+						Set Live{{end}}
 					</button>
-				    </li>
+					</li>
 				</ul>
 				<script>
 				 $("#live-{{$match.ID}}").click(function() {
-				     $.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
+					 $.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
 					   {match_id: {{$match.ID}}})
-				      .fail(function(data) {
+					  .fail(function(data) {
 					  alert("Error: "+JSON.stringify(data))
-				      })
+					  })
 				 });
 				</script>
 				{{end}}
-			    </span>
+				</span>
 			</li>
 			<hr class="style1">{{end}}
-		    </ul>
+			</ul>
 		</section>
-		<section class="mdl-layout__tab-panel is-active" id="stats">
-		    <!-- STATS -->
-		    <div class="mdl-grid">
+		<section class="mdl-layout__tab-panel" id="stats">
+			<!-- STATS -->
+			<div class="mdl-grid">
 			{{range $class, $info := .classes}}
 			{{if $info.HighestDPM.Player.Name}}
 			{{$className := index $classMap $class}}
 			<div class="mdl-cell">
-			    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				<div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
 				<div class="mdl-card__title"></div>
 				<div class="mdl-card__supporting-text">
-				    {{if eq $class "medic"}}
-				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
-				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Stat}}</h3>
-				    <h5 class="stat-card"> Highest Ubers Per Drops</h5>
-				    {{else}}
-				    <h3 class="stat-card">{{$info.HighestDPM.Player.Name}}</h3>
-				    <h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
-				    <h5 class="stat-card"> Highest {{$className}} DPM</h5>
-				    {{end}}
+					{{if eq $class "medic"}}
+					<h3 class="stat-card">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
+					<h3 class="stat-card">{{$info.HighestUbersPerDrop.Stat}}</h3>
+					<h5 class="stat-card"> Highest Ubers Per Drops</h5>
+					{{else}}
+					<h3 class="stat-card">{{$info.HighestDPM.Player.Name}}</h3>
+					<h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
+					<h5 class="stat-card"> Highest {{$className}} DPM</h5>
+					{{end}}
 				</div>
 				<p>
-				    <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
+					<div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
 					<button class="mdl-button mdl-js-button">
-					    <a href="/stats?class={{$class}}">
+						<a href="/stats?class={{$class}}">
 						<p class="stat-card">{{$className}} Stats</p></a>
 					</button>
-				    </div>
+					</div>
 				</p>
-			    </div>
+				</div>
 			</div>
 			{{end}}
 			{{end}}
-		    </div>
+			</div>
 		</section>
 		<section class="mdl-layout__tab-panel" id="teams">
-		    <table class="mdl-data-table mdl-js-data-table teams">
+			<table class="mdl-data-table mdl-js-data-table teams">
 			<thead>
-			    <tr>
+				<tr>
 				<th class="mdl-data-table__cell--non-numeric">Team</th>
 				<th>Wins</th>
 				<th>Losses</th>
-			    </tr>
+				</tr>
 			</thead>
 			<tbody>
-			    {{range $team := .teams}}
-			    <tr>
+				{{range $team := .teams}}
+				<tr>
 				<td class="mdl-data-table__cell--non-numeric"><a href="/team?id={{$team.ID}}">{{$team.Name}}</a></td>
 				<td>{{$team.Wins}}</td>
 				<td>{{$team.Losses}}</td>
 			{{end}}
 			</tbody>
-		    </table>
+			</table>
 		</section>
 		<section class="mdl-layout__tab-panel" id="social">
-		    <!-- SOCIAL -->
+			<!-- SOCIAL -->
 		</section>
-	    </main>
+		</main>
 	</div>
-	</div>
-    </body>
+	<script>
+		var eventDate = new Date("2016-08-26T19:00:00+02:00");
+		var update = function() {
+			var now = new Date();
+			var diff = eventDate - now;
+			if (diff < 0) {
+			}
+			var days = Math.floor(diff / 86400000);
+			var hours = Math.floor((diff % 86400000) / 3600000);
+			var _minutes = Math.floor((diff % 3600000) / 60000);
+			var minutes = ("0" + _minutes).slice(-2);
+			if (days > 1) {
+				result = days + " days, " + hours + ":" + minutes;
+			} else if (days > 1) {
+				var result = "1 day, " + hours + ":" + minutes;
+			} else {
+				var result = hours + ":" + minutes;
+			}
+			document.getElementById('countdown').innerHTML = result;
+		}
+		update();
+		setInterval(update, 60000);
+	</script>
+	</body>
 </html>
