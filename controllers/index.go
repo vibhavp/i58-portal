@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/vibhavp/i58-portal/controllers/api/admin"
 	"github.com/vibhavp/i58-portal/models"
@@ -60,12 +61,18 @@ func newClassMap() map[string]highest {
 
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	indexPage := template.Must(template.ParseFiles("views/index.html"))
+	eventTime, e := time.Parse("2006-01-02T15:04:05-07:00", "2016-08-26T19:00:00+02:00")
+	if e != nil {
+		log.Println(e)
+	}
+
 	err := indexPage.Execute(w, map[string]interface{}{
-		"classes":  newClassMap(),
-		"classMap": classes,
-		"matches":  models.GetAllMatches(),
-		"loggedIn": admin.IsLoggedIn(r),
-		"teams":    models.GetAllTeams(),
+		"classes":     newClassMap(),
+		"classMap":    classes,
+		"matches":     models.GetAllMatches(),
+		"loggedIn":    admin.IsLoggedIn(r),
+		"teams":       models.GetAllTeams(),
+		"beforeEvent": time.Now().Before(eventTime),
 	})
 	if err != nil {
 		log.Println(err)
