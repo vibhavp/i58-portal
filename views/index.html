@@ -15,7 +15,7 @@
 	 .index.mdl-shadow--2dp {
 	     /* text-shadow: 1px 1/0px #000000; */
 	     color: #FFFFFF;
-	     background-color: rgba(0, 0, 0, 0.70);
+	     background-color: rgba(33, 33, 33, 0.46);
 	     padding-bottom: 5px;
 	     padding-left: 20px;
 	     padding-right: 10px;
@@ -27,9 +27,13 @@
 	 .header-layer {
 	     color: rgba(255, 255, 255, 0.12);
 	 }
-	 .list-item {
-	     background-color: #C5CAE9;
+	 .list-item.mdl-list__item {
+	     background-color: rgba(33, 33, 33, 0.46);
+	     color: #FFFFFF;
 	     /* height: 1px !important; */
+	 }
+	 .list-item {
+	     color: #FFFFFF;
 	 }
 	 h5.stat-card {
 	     text-align: center;
@@ -138,7 +142,7 @@
 				</div>
 				{{end}}
 				<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i></span>
-				<span class="mdl-list__item-sub-title">{{$match.Stage}}</span>
+				<span class="mdl-list__item-sub-title"><div style="color:#FFFFFF">{{$match.Stage}}</div></span>
 			    </span>
 			    <span class="mdl-list__item-secondary-info">
 				{{$match.Team1Score}}-{{$match.Team2Score}}
@@ -167,7 +171,7 @@ for="highlights-{{$match.ID}}">
 				{{if $loggedIn}}
 				<button id="admin-{{$match.ID}}"
 					class="mdl-button mdl-js-button">
-				    Admin
+				    <div style="color:#FFFFFF">Admin</div>
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 for="admin-{{$match.ID}}">
@@ -191,7 +195,7 @@ for="admin-{{$match.ID}}">
 				{{end}}
 			    </span>
 			</li>
-			<hr class="style1">{{end}}
+			{{end}}
 		    </ul>
 		</section>
 		<section class="mdl-layout__tab-panel" id="stats">
