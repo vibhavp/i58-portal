@@ -44,8 +44,10 @@
 	     color: #000000
 	 }
 	 table.teams {
+	     background-color: rgba(33, 33, 33, 0.46);
+	     color: #FFFFFF;
+	     text-shadow: 1px 0px #000000;
 	     width: 100%;
-	     height: 100%;
 	 }
 	 p.stat-card {
 	     text-align: center;
@@ -211,7 +213,7 @@ for="admin-{{$match.ID}}">
 				    {{if eq $class "medic"}}
 				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
 				    <h3 class="stat-card">{{$info.HighestUbersPerDrop.Stat}}</h3>
-				    <h5 class="stat-card"> Highest Ubers Per Drops</h5>
+				    <h5 class="stat-card"> Highest Ubers/Drops</h5>
 				    {{else}}
 				    <h3 class="stat-card">{{$info.HighestDPM.Player.Name}}</h3>
 				    <h3 class="stat-card">{{$info.HighestDPM.Stat}}</h3>
@@ -236,9 +238,9 @@ for="admin-{{$match.ID}}">
 		    <table class="mdl-data-table mdl-js-data-table teams">
 			<thead>
 			    <tr>
-				<th class="mdl-data-table__cell--non-numeric">Team</th>
-				<th>Wins</th>
-				<th>Losses</th>
+				<th style="color:#FFFFFF" class="mdl-data-table__cell--non-numeric">Team</th>
+				<th style="color:#FFFFFF">Wins</th>
+				<th style="color:#FFFFFF">Losses</th>
 			    </tr>
 			</thead>
 			<tbody>
