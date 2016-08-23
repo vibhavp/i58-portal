@@ -28,22 +28,23 @@
 	     color: rgba(255, 255, 255, 0.12);
 	 }
 	 .list-item {
+	     background-color: #FFFFFF;
 	     height: 1px !important;
 	 }
-	 /* h5.stat-card {
-	    text-align: center;
-	    } */
+	 h5.stat-card {
+	     text-align: center;
+	 }
 	 h3.stat-card {
-	     /* text-align: center; */
+	     text-align: center;
 	     word-wrap: break-word;
 	     color: #000000
 	 }
 	 table.teams {
 	     width: 100%;
-	     /* height: 100%; */
+	     height: 100%;
 	 }
 	 p.stat-card {
-	     /* text-align: center; */
+	     text-align: center;
 	 }
 	 {{range $class, $info := .classes}}
 	 .stat-card-{{$class}}.mdl-card {
@@ -128,7 +129,7 @@
 		    <!-- MATCHES -->
 		    <ul class="list-item mdl-list">
 			{{range $match := .matches}}
-			<li class="list-item mdl-list__item mdl-list__item--two-line">
+			<li class="mdl-shadow--2dp list-item mdl-list__item mdl-list__item--two-line">
 			    <span class="mdl-list__item-primary-content">
 				{{if $match.Live}}
 				<div id="live" class="icon material-icons mdl-list__item-icon">tv</div>
