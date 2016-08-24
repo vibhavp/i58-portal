@@ -157,3 +157,29 @@ func addPlayer(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "Added!")
 }
+
+func addTweet(w http.ResponseWriter, r *http.Request) {
+	if !IsLoggedIn(r) {
+		http.Error(w, "You are not logged in!", http.StatusUnauthorized)
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	query := r.Form
+
+	url := query.Get("url")
+	if url == "" {
+		http.Error(w, "Missing URL", http.StatusBadRequest)
+		return
+	}
+
+	if err := models.AddTweet(url); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	fmt.Fprintf(w, "Added!")
+}

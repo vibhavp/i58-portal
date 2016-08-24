@@ -100,6 +100,13 @@
 			    <a href="#social" class="mdl-layout__tab">Social</a>
 			</div>
 		    </header>
+		    {{else}}
+		    <header class="mdl-layout__header">
+			<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+			    <a href="#index" class="mdl-layout__tab is-active">Index</a>
+			    <a href="#social" class="mdl-layout__tab">Social</a>
+			</div>
+		    </header>
 		    {{end}}
 			<main class="mdl-layout__content">
 			<section class="index mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
@@ -251,6 +258,9 @@ $("#live-{{$match.ID}}").click(function() {
 		</section>
 		<section class="mdl-layout__tab-panel" id="social">
 		    <!-- SOCIAL -->
+		    {{range $tweet := .tweets}}
+		    <!-- $tweet.URL is tweet's URL -->
+		    {{end}}
 		</section>
 	    </main>
 	</div>

@@ -12,6 +12,7 @@ func Migrate() {
 	db.DB.AutoMigrate(&Stat{})
 	db.DB.AutoMigrate(&AvgStats{})
 	db.DB.AutoMigrate(&Team{})
+	db.DB.AutoMigrate(&Tweet{})
 	db.DB.Model(&AvgStats{}).AddUniqueIndex(
 		"avgstats_class_playerid",
 		"player_id", "class")

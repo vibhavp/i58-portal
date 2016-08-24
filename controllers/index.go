@@ -73,6 +73,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		"loggedIn":    admin.IsLoggedIn(r),
 		"teams":       models.GetAllTeams(),
 		"beforeEvent": time.Now().Before(eventTime),
+		"tweets":      models.GetAllTweets(),
 	})
 	if err != nil {
 		log.Println(err)
