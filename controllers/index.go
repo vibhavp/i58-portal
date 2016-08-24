@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/vibhavp/i58-portal/config"
 	"github.com/vibhavp/i58-portal/controllers/api/admin"
 	"github.com/vibhavp/i58-portal/models"
 )
@@ -74,6 +75,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		"teams":       models.GetAllTeams(),
 		"beforeEvent": time.Now().Before(eventTime),
 		"tweets":      models.GetAllTweets(),
+		"tracking":    config.Config.AnalyticsID,
 	})
 	if err != nil {
 		log.Println(err)

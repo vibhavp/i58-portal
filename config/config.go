@@ -13,7 +13,8 @@ var Config = struct {
 	Address  string `envconfig:"ADDRESS" default:":8080"`
 	DBDriver string `envconfig:"DB_DRIVER" default:"sqlite3"`
 
-	DBURL string `envconfig:"DB_URL" default:"logs.db"`
+	DBURL       string `envconfig:"DB_URL" default:"logs.db"`
+	AnalyticsID string `envconfig:"ANALYTICS_ID"`
 }{}
 
 func init() {
