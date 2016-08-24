@@ -43,22 +43,11 @@
 	 .list-item {
 		 color: #FFFFFF;
 	 }
-	 h5.stat-card {
-		 text-align: center;
-	 }
-	 h3.stat-card {
-		 text-align: center;
-		 word-wrap: break-word;
-		 color: #000000
-	 }
 	 table.teams {
 		 background-color: rgba(33, 33, 33, 0.46);
 		 color: #FFFFFF;
 		 text-shadow: 1px 0px #000000;
 		 width: 100%;
-	 }
-	 p.stat-card {
-		 text-align: center;
 	 }
 	 {{range $class, $info := .classes}}
 	 .stat-card-{{$class}}.mdl-card {
@@ -227,8 +216,7 @@ $("#live-{{$match.ID}}").click(function() {
 				    {{end}}
 				<p>
 				    <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
-					<button class="mdl-button mdl-js-button">
-					    <a href="/stats?class={{$class}}">
+					    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">
 						<p class="stat-card">{{$className}} Stats</p></a>
 					</button>
 				    </div>
