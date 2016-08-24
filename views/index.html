@@ -7,7 +7,7 @@
 		<title>i58 TF2 Portal</title>
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.blue_grey-indigo.min.css" /> 
+		<link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.blue_grey-indigo.min.css" />
 		<style>
 	.center-image {
 		display: block;
@@ -89,16 +89,18 @@
 	</head>
 	<body>
 		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
-		mdl-layout--fixed-tabs">
-			<header class="mdl-layout__header">
-		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-			<a href="#index" class="mdl-layout__tab is-active">Index</a>
-			<a href="#matches" class="mdl-layout__tab">Matches</a>
-			<a href="#stats" class="mdl-layout__tab">Stats</a>
-			<a href="#teams" class="mdl-layout__tab">Teams</a>
-			<a href="#social" class="mdl-layout__tab">Social</a>
-		</div>
-			</header>
+			    mdl-layout--fixed-tabs">
+		    {{if .matches}}
+		    <header class="mdl-layout__header">
+			<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+			    <a href="#index" class="mdl-layout__tab is-active">Index</a>
+			    <a href="#matches" class="mdl-layout__tab">Matches</a>
+			    <a href="#stats" class="mdl-layout__tab">Stats</a>
+			    <a href="#teams" class="mdl-layout__tab">Teams</a>
+			    <a href="#social" class="mdl-layout__tab">Social</a>
+			</div>
+		    </header>
+		    {{end}}
 			<main class="mdl-layout__content">
 			<section class="index mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
 				{{if $beforeEvent}}
