@@ -207,14 +207,14 @@ $("#live-{{$match.ID}}").click(function() {
 						<div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
 							{{if eq $class "medic"}}
 							<div class="mdl-card__title">
-								<h2 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Stat}} Ubers per Drops</h3>
+								<h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
 							</div>
-							<div class="mdl-card__supporting-text">{{$info.HighestUbersPerDrop.Player.Name}}</div>
+							<div class="mdl-card__supporting-text">Highest Uber per Drop ratio: {{$info.HighestUbersPerDrop.Stat}}</div>
 							{{else}}
 					<div class="mdl-card__title">
-						<h2 class="mdl-card__title-text">{{$info.HighestDPM.Stat}} Damage per Minute</h3>
+						<h2 class="mdl-card__title-text">{{$info.HighestDPM.Player.Name}}</h3>
 					</div>
-					<div class="mdl-card__supporting-text">{{$info.HighestDPM.Player.Name}}</div>
+					<div class="mdl-card__supporting-text">Highest Damage per Minute ratio: {{$info.HighestDPM.Stat}}</div>
 				    {{end}}
 				    <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
 					    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">{{$className}} Stats</a>
