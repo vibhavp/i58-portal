@@ -18,10 +18,6 @@
 		flex: 0 0 auto;
 		margin: 8px;
 	}
-	.mdl-layout__header {
-		min-height: 48px;
-		height: 48px;
-	}
 	 .mdl-layout__content {
 		 background-position: 50% 0;
 		 background-image: url("assets/background.png");
@@ -43,7 +39,7 @@
 		 color: rgba(255, 255, 255, 0.12);
 	 }
 	 .header-layer {
-		 color: rgba(255, 255, 255, 0.12);
+		 background: url('assets/logo.png') center / cover;
 	 }
 	 .list-item.mdl-list__item {
 		 background-color: rgba(33, 33, 33, 0.46);
@@ -89,18 +85,8 @@
 	<body>
 		<div class="header-layer mdl-layout mdl-js-layout mdl-layout--fixed-header
 		mdl-layout--fixed-tabs">
-			<header class="mdl-layout__header">
-				<!-- <div class="mdl-layout__header-row">
-		<span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>
-		{{if $loggedIn}}
-		<nav class="mdl-navigation">
-		<a class="mdl-navigation__link" href="/admin" target="_blank">Admin</a>
-		</nav>
-		<nav class="mdl-navigation">
-		<a class="mdl-navigation__link" href="/api/logout">Logout</a>
-		</nav>
-		{{end}}
-		</div> -->
+			<header class="mdl-layout__header mdl-layout__header--transparent">
+				<div class="mdl-layout__header-row"></div>
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 			<a href="#index" class="mdl-layout__tab is-active">Index</a>
 			<a href="#matches" class="mdl-layout__tab">Matches</a>
