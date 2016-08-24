@@ -58,7 +58,7 @@
 		 background-color: rgba(33, 33, 33, 0.46);
 		 color: #FFFFFF;
 		 text-shadow: 1px 0px #000000;
-		 width: 100%;
+		 max-width: 720px;
 	 }
 	 {{range $class, $info := .classes}}
 	 .stat-card-{{$class}}.mdl-card {
@@ -249,10 +249,13 @@ $("#live-{{$match.ID}}").click(function() {
 			</thead>
 			<tbody>
 			    {{range $team := .teams}}
-			    <tr>
-				<td class="mdl-data-table__cell--non-numeric"><a href="/team?id={{$team.ID}}">{{$team.Name}}</a></td>
+				<a href="/team?id={{$team.ID}}">
+                <tr>
+				<td class="mdl-data-table__cell--non-numeric">{{$team.Name}}</td>
 				<td>{{$team.Wins}}</td>
 				<td>{{$team.Losses}}</td>
+				</tr>
+				</a>
 				{{end}}
 			</tbody>
 		    </table>
