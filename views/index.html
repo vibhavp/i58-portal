@@ -250,8 +250,7 @@ $("#live-{{$match.ID}}").click(function() {
 			</thead>
 			<tbody>
 			    {{range $team := .teams}}
-				<a href="/team?id={{$team.ID}}">
-                <tr>
+				<tr onclick="location.href='/team?id={{$team.ID}}'">
 				<td class="mdl-data-table__cell--non-numeric">{{$team.Name}}</td>
 				<td>{{$team.Wins}}</td>
 				<td>{{$team.Losses}}</td>
