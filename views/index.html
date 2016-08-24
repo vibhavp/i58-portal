@@ -131,7 +131,7 @@
 					<p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
 					<p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
 					<p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
-					<p>Note: <em>i58.tf is not related to Teamfortress.TV, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>.</em></p>
+					<p>Note: <em>i58.tf is not related to Teamfortress.TV, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra for the assets used on the website, The0x539 and the Teamfortress.TV for their help.</em></p>
 				</div>
 				<div class="index mdl-shadow--2dp">
 					<h1 style="text-align:center">Coverage</h1>
@@ -256,17 +256,24 @@ $("#live-{{$match.ID}}").click(function() {
 			</tbody>
 		    </table>
 		</section>
-		<section class="mdl-layout__tab-panel" id="social">
+		<section class="mdl-layout__tab-panel grid" id="social">
 		    <!-- SOCIAL -->
-		    {{range $tweet := .tweets}}
-		    <!-- $tweet.URL is tweet's URL -->
-		    {{end}}
 		</section>
 	    </main>
 	</div>
-	{{if $beforeEvent}}
 	<script>
-	 var eventDate = new Date("2016-08-26T19:00:00+02:00");
+function addTweet(url) {
+	var id = url.split('/').slice(-1)[0];
+	var el = document.createElement('div');
+	el.classList.add('cell');
+	twttr.widgets.createTweet(id, el);
+	document.getElementById('social').appendChild(el);
+}
+{{range $tweet := .tweets}}
+addTweet("{{tweet.URL}}");
+{{end}}
+{{if $beforeEvent}}
+var eventDate = new Date("2016-08-26T19:00:00+02:00");
 	 var update = function() {
 	     var now = new Date();
 	     var diff = eventDate - now;
@@ -285,7 +292,7 @@ $("#live-{{$match.ID}}").click(function() {
 	 }
 	 update();
 	 setInterval(update, 1000);
-	</script>
 	{{end}}
+	</script>
     </body>
 </html>
