@@ -59,6 +59,8 @@
 		 color: #FFFFFF;
 		 text-shadow: 1px 0px #000000;
 		 width: 100%;
+		 max-width: 720px;
+		 margin: auto;
 	 }
 	 {{range $class, $info := .classes}}
 	 .stat-card-{{$class}}.mdl-card {
@@ -84,7 +86,7 @@
 		 margin: 0 auto;
 	 }
 		</style>
-		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+		<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 		<script src="https://platform.twitter.com/widgets.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	</head>
@@ -132,12 +134,14 @@
 					<p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
 					<p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
 					<p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
-					<p>Note: <em>i58.tf is not related to Teamfortress.TV, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra for the assets used on the website, The0x539 and the Teamfortress.TV for their help.</em></p>
 				</div>
 				<div class="index mdl-shadow--2dp">
 					<h1 style="text-align:center">Coverage</h1>
 					<p>The matchups are bound to be legendary, and to bring you coverage for these games is none other than a <a href="http://teamfortress.tv/35217">complete broadcasting crew from Teamfortress.TV</a> with timelessly famous members of the community. Alongside Teamfortress.TV's video coverage on <a href="http://twitch.tv/teamfortresstv">Twitch</a>, we're proud to announce i58.tf will provide updated logs, per-player stats, stream highlights and social media in real time.</p>
 					<img src="assets/casters.jpg" alt="TFTV Casting Crew" style="max-width:720px; margin-left:-20px">
+				</div>
+				<div class="index mdl-shadow--2dp">
+					<p>Note: <em>i58.tf is not related to Teamfortress.TV, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra for the assets used on the website, The0x539 and the Teamfortress.TV for their help.</em></p>
 				</div>
 			</section>
 			<section class="mdl-layout__tab-panel" id="matches">
@@ -249,16 +253,19 @@ $("#live-{{$match.ID}}").click(function() {
 			</thead>
 			<tbody>
 			    {{range $team := .teams}}
-			    <tr>
-				<td class="mdl-data-table__cell--non-numeric"><a href="/team?id={{$team.ID}}">{{$team.Name}}</a></td>
+				<tr onclick="location.href='/team?id={{$team.ID}}'">
+				<td class="mdl-data-table__cell--non-numeric">{{$team.Name}}</td>
 				<td>{{$team.Wins}}</td>
 				<td>{{$team.Losses}}</td>
+				</tr>
+				</a>
 				{{end}}
 			</tbody>
 		    </table>
 		</section>
-		<section class="mdl-layout__tab-panel grid" id="social">
-		    <!-- SOCIAL -->
+		<section class="mdl-layout__tab-panel" id="social">
+			<!-- SOCIAL -->
+			<div class="grid" id="tweet-list"></div>
 		</section>
 	    </main>
 	</div>
@@ -268,11 +275,13 @@ function addTweet(url) {
 	var el = document.createElement('div');
 	el.classList.add('cell');
 	twttr.widgets.createTweet(id, el);
-	document.getElementById('social').appendChild(el);
+	document.getElementById('tweet-list').appendChild(el);
 }
-{{range $tweet := .tweets}}
-addTweet("{{$tweet.URL}}");
-{{end}}
+setTimeout(function () {
+	{{range $tweet := .tweets}}
+	addTweet("{{$tweet.URL}}");
+	{{end}}
+}, 1000);
 {{if $beforeEvent}}
 var eventDate = new Date("2016-08-26T19:00:00+02:00");
 	 var update = function() {
@@ -285,7 +294,7 @@ var eventDate = new Date("2016-08-26T19:00:00+02:00");
 		 var hours = Math.floor((diff % 86400000) / 3600000);
 		 var minutes = Math.floor((diff % 3600000) / 60000);
 		 var seconds = Math.floor((diff % 60000) / 1000);
-		 if (days > 0) { result = [ days, "h ", hours, "h ", minutes, "m ", seconds, "s " ].join(""); }
+		 if (days > 0) { result = [ days, "d ", hours, "h ", minutes, "m ", seconds, "s " ].join(""); }
 		 else if (hours > 0) { result = [ hours, "h ", minutes, "m ", seconds, "s " ].join(""); }
 		 else if (minutes > 0) { result = [ minutes, "m ", seconds, "s " ].join(""); }
 		 else { result = [ seconds, "s " ].join(""); }
