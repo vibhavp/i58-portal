@@ -271,9 +271,11 @@ function addTweet(url) {
 	twttr.widgets.createTweet(id, el);
 	document.getElementById('tweet-list').appendChild(el);
 }
-{{range $tweet := .tweets}}
-addTweet("{{$tweet.URL}}");
-{{end}}
+setTimeout(function () {
+	{{range $tweet := .tweets}}
+	addTweet("{{$tweet.URL}}");
+	{{end}}
+}, 1000);
 {{if $beforeEvent}}
 var eventDate = new Date("2016-08-26T19:00:00+02:00");
 	 var update = function() {
