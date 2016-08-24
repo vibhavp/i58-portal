@@ -9,10 +9,18 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.blue_grey-indigo.min.css" /> 
 		<style>
-.mdl-layout__header {
-	min-height: 48px;
-	height: 48px;
-}
+	.grid {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+	}
+	.cell {
+		flex: 0 1 auto;
+	}
+	.mdl-layout__header {
+		min-height: 48px;
+		height: 48px;
+	}
 	 .mdl-layout__content {
 		 background-position: 50% 30%;
 		 background-image: url("https://i.imgur.com/j1BXcmz.png");
@@ -199,11 +207,11 @@ $("#live-{{$match.ID}}").click(function() {
 			</section>
 			<section class="mdl-layout__tab-panel" id="stats">
 				<!-- STATS -->
-				<div class="mdl-grid">
+				<div class="grid">
 					{{range $class, $info := .classes}}
 					{{if $info.HighestDPM.Player.Name}}
 					{{$className := index $classMap $class}}
-					<div class="mdl-cell">
+					<div class="cell">
 						<div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
 							{{if eq $class "medic"}}
 							<div class="mdl-card__title">
