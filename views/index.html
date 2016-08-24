@@ -270,7 +270,7 @@ function addTweet(url) {
 	document.getElementById('social').appendChild(el);
 }
 {{range $tweet := .tweets}}
-addTweet("{{tweet.URL}}");
+addTweet("{{$tweet.URL}}");
 {{end}}
 {{if $beforeEvent}}
 var eventDate = new Date("2016-08-26T19:00:00+02:00");
