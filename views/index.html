@@ -39,7 +39,8 @@
 		 color: rgba(255, 255, 255, 0.12);
 	 }
 	 .header-layer {
-		 background: url('assets/logo.png') center / cover;
+		 background: url('assets/logo.png') no-repeat, rgb(96,125,139);
+		 background-position-x: center;
 	 }
 	 .list-item.mdl-list__item {
 		 background-color: rgba(33, 33, 33, 0.46);
@@ -83,10 +84,12 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	</head>
 	<body>
-		<div class="header-layer mdl-layout mdl-js-layout mdl-layout--fixed-header
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
 		mdl-layout--fixed-tabs">
-			<header class="mdl-layout__header mdl-layout__header--transparent">
-				<div class="mdl-layout__header-row"></div>
+			<header class="mdl-layout__header header-layer">
+				<div class="mdl-layout__header-row">
+					<span class="mdl-layout-title">Multiplay Insomnia 58 - Team Fortress 2</span>		
+				</div>
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 			<a href="#index" class="mdl-layout__tab is-active">Index</a>
 			<a href="#matches" class="mdl-layout__tab">Matches</a>
