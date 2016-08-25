@@ -76,7 +76,24 @@
 		 background: url('assets/{{$class}}.jpg') center;
 		 color: white;
 		 text-shadow: black 1px 1px;
-	 }
+	}
+	{{if eq $class "soldier"}}
+	.stat-card-soldier-airshot > .mdl-card__title {
+		 height: 254px;
+		 width: 210px;
+		 background: url('assets/soldier_airshot.png') center;
+		 color: white;
+		 text-shadow: black 1px 1px;
+	}
+	{{else if eq $class "demoman"}}
+	.stat-card-demoman-airshot > .mdl-card__title {
+		 height: 254px;
+		 width: 210px;
+		 background: url('assets/demo_airshot.png') center;
+		 color: white;
+		 text-shadow: black 1px 1px;
+	}
+	{{end}}
 	 .stat-card-{{$class}} > .mdl-card__actions {
 		 align-items: center;
 		 display: flex;
@@ -228,7 +245,7 @@ $("#live-{{$match.ID}}").click(function() {
 
 				  {{if $info.HighestAirshots.Player.Name}}
 				  <div class="cell">
-				    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				    <div class="stat-card-{{$class}}-airshot mdl-card mdl-shadow--2dp">
 				      <div class="mdl-card__title">
 					<h2 class="mdl-card__title-text">{{$info.HighestAirshots.Player.Name}}</h2>
 				      </div>
