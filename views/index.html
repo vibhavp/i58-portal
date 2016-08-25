@@ -275,7 +275,7 @@ function addTweet(url) {
 	var el = document.createElement('div');
 	el.classList.add('cell');
 	twttr.widgets.createTweet(id, el);
-	document.getElementById('tweet-list').appendChild(el);
+	$('#tweet-list').prepend(el);
 }
 setTimeout(function () {
 	{{range $tweet := .tweets}}
