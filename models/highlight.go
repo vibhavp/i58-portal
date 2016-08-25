@@ -20,7 +20,7 @@ func AddHighlight(logsID int, url, title string) error {
 		Scan(&matchID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			AddMatch(logsID, "", "", "", "", 0, 0)
+			AddMatch(logsID, "", "", "", "", 0, 0, "")
 		} else {
 			return err
 		}

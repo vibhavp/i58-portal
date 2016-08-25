@@ -15,6 +15,7 @@ type Match struct {
 	Team2ID    uint `sql:"not null"`
 	Team2      Team `gorm:"ForeignKey:Team2ID"`
 	Team2Score int
+	Map        string
 
 	Stage      string `sql:"not null"`
 	MatchPage  string `sql:"not null"`
@@ -25,6 +26,7 @@ type Match struct {
 func GetAllMatches() []Match {
 	var matches []Match
 	db.DB.Preload("Highlights").Preload("Team1").Preload("Team2").
+		Order("id desc").
 		Find(&matches)
 	return matches
 }
@@ -47,7 +49,7 @@ func UnsetMatchLive(matchID int) error {
 }
 
 func AddMatch(logsID int, team1, team2, stage, page string,
-	team1Score, team2Score int) error {
+	team1Score, team2Score int, mapName string) error {
 
 	team1ID, team2ID := getTeam(team1), getTeam(team2)
 
@@ -60,6 +62,7 @@ func AddMatch(logsID int, team1, team2, stage, page string,
 				"team2_score": team1Score,
 				"stage":       stage,
 				"match_page":  page,
+				"map":         mapName,
 			}).Error
 	}
 
@@ -78,6 +81,7 @@ func AddMatch(logsID int, team1, team2, stage, page string,
 		Team1Score: team1Score,
 		Team2Score: team2Score,
 		Stage:      stage,
+		Map:        mapName,
 		MatchPage:  page,
 	}).Error
 	if err != nil {

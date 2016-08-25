@@ -66,6 +66,12 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	mapName := strings.TrimSpace(query.Get("map"))
+	if mapName == "" {
+		http.Error(w, "Missing map", http.StatusBadRequest)
+		return
+	}
+
 	m := reValidURL.FindStringSubmatch(url)
 	id, err := strconv.Atoi(m[1])
 	if err != nil {
@@ -73,7 +79,7 @@ func addMatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.AddMatch(id, team1, team2, stage, page, team1Score, team2Score)
+	err = models.AddMatch(id, team1, team2, stage, page, team1Score, team2Score, mapName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

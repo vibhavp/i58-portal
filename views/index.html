@@ -180,7 +180,7 @@
 								Live
 							</div>
 							{{end}}
-							<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i></span>
+							<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i> - {{$match.Map}}</span>
 							<span class="mdl-list__item-sub-title"><div style="color:#FFFFFF">{{$match.Stage}}</div></span>
 						</span>
 						<span class="mdl-list__item-secondary-info">
@@ -293,8 +293,8 @@ $("#live-{{$match.ID}}").click(function() {
 			<thead>
 			    <tr>
 				<th style="color:#FFFFFF" class="mdl-data-table__cell--non-numeric">Team</th>
-				<th style="color:#FFFFFF">Wins</th>
-				<th style="color:#FFFFFF">Losses</th>
+				<th style="color:#FFFFFF">Map Wins</th>
+				<th style="color:#FFFFFF">Map Losses</th>
 			    </tr>
 			</thead>
 			<tbody>
