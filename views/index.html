@@ -64,12 +64,12 @@
 	 }
 	 {{range $class, $info := .classes}}
 	 .stat-card-{{$class}}.mdl-card {
-		 width: 191px;
+		 width: 210px;
 		 margin: auto;
 	 }
 	 .stat-card-{{$class}} > .mdl-card__title {
 		 height: 254px;
-		 width: 191px;
+		 width: 210px;
 		 background: url('assets/{{$class}}.jpg') center;
 		 color: white;
 		 text-shadow: black 1px 1px;
@@ -118,7 +118,11 @@
 					<h2 class="mdl-typography--display-3"  id="countdown" style="text-align:center"></h2>
 				</div>
 				{{else}}
-				<iframe src="http://player.twitch.tv/?channel=teamfortresstv" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+				<iframe src="http://player.twitch.tv/?channel=teamfortresstv" id="stream" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+				<div style="text-align:center;">
+				  <button type="button" id="stream-button" style="margin:auto" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">teamfortress.tv #2</button>
+				</div>
+				<script src="/js/twitch_frame.js"></script>
 				{{end}}
 				<div class="index mdl-shadow--2dp">
 					<img class="center-image" src="assets/logo.png" alt="Logo"></img>
@@ -216,32 +220,60 @@ $("#live-{{$match.ID}}").click(function() {
 			<section class="mdl-layout__tab-panel" id="stats">
 				<!-- STATS -->
 				<div class="grid">
-					{{range $class, $info := .classes}}
-					{{if $info.HighestDPM.Player.Name}}
-					{{$className := index $classMap $class}}
-					<div class="cell">
-						<div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
-							{{if eq $class "medic"}}
-							<div class="mdl-card__title">
-								<h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
-							</div>
-							<div class="mdl-card__supporting-text">Highest Uber per Drop ratio: {{$info.HighestUbersPerDrop.Stat}}</div>
-							{{else}}
-					<div class="mdl-card__title">
-						<h2 class="mdl-card__title-text">{{$info.HighestDPM.Player.Name}}</h3>
-					</div>
-					<div class="mdl-card__supporting-text">Highest Damage per Minute ratio: {{$info.HighestDPM.Stat}}</div>
-				    {{end}}
-				    <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
-					    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">{{$className}} Stats</a>
-					</button>
+				  {{range $class, $info := .classes}}
+				  {{$className := index $classMap $class}}
+
+				  {{if $info.HighestAirshots.Player.Name}}
+				  <div class="cell">
+				    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				      <div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">{{$info.HighestAirshots.Player.Name}}</h2>
+				      </div>
+				      <div class="mdl-card__supporting-text">Highest {{$className}} Airshots: <b>{{$info.HighestAirshots.Stat}}</b></div>
+				      <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
+					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">View {{$className}} Stats</a>
+				      </div>
 				    </div>
-			    </div>
-			</div>
-			{{end}}
-			{{end}}
-		    </div>
-		</section>
+				  </div>
+				  {{end}}
+
+				  {{if $info.HighestKills.Player.Name}}
+				  <div class="cell">
+				    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				      <div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">{{$info.HighestKills.Player.Name}}</h2>
+				      </div>
+				      <div class="mdl-card__supporting-text">Highest {{$className}} Kills: <b>{{$info.HighestKills.Stat}}</b></div>
+				      <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
+					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">View {{$className}} Stats</a>
+				      </div>
+				    </div>
+				  </div>
+				  {{end}}
+
+				  {{if $info.HighestDPM.Player.Name}}
+				  <div class="cell">
+				    <div class="stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				      {{if eq $class "medic"}}
+				      <div class="mdl-card__title">
+					<h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
+				      </div>
+				      <div class="mdl-card__supporting-text">Highest Ubers per Drop: <b>{{$info.HighestUbersPerDrop.Stat}}</b></div>
+				      {{else}}
+				      <div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">{{$info.HighestDPM.Player.Name}}</h2>
+				      </div>
+				      <div class="mdl-card__supporting-text">Highest Damage per Minute: <b>{{$info.HighestDPM.Stat}}</b></div>
+				      {{end}}
+				      <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
+					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">View {{$className}} Stats</a>
+				      </div>
+				    </div>
+				  </div>
+				  {{end}}
+				  {{end}}
+				</div>
+			</section>
 		<section class="mdl-layout__tab-panel" id="teams">
 		    <table class="mdl-data-table mdl-js-data-table teams">
 			<thead>
