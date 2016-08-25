@@ -21,6 +21,8 @@ type highest struct {
 	Name                string
 	HighestDPM          stat
 	HighestUbersPerDrop stat
+	HighestAirshots     stat
+	HighestKills        stat
 }
 
 var classes = map[string]string{
@@ -53,9 +55,25 @@ func newClassMap() map[string]highest {
 		// 	as = *models.GetHighestStat("airshots", class)
 		// }
 
+		var as stat
+		if class == "demoman" || class == "soldier" {
+			s := models.GetHighestStat("airshots", class)
+			as.Stat = int(s.Airshots)
+			as.Player = s.Player
+		}
+
+		var kills stat
+		if class == "sniper" || class == "spy" {
+			k := models.GetHighestStat("kills", class)
+			kills.Stat = int(k.Kills)
+			kills.Player = k.Player
+		}
+
 		stats[class] = highest{classes[class],
 			stat{int(dpm.DPM), dpm.Player},
-			stat{int(ubersPerDrops.UbersPerDrop), ubersPerDrops.Player}}
+			stat{int(ubersPerDrops.UbersPerDrop), ubersPerDrops.Player},
+			as,
+			kills}
 	}
 	return stats
 }
