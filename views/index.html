@@ -450,27 +450,6 @@ setTimeout(function () {
     addTweet("{{$tweet.URL}}");
     {{end}}
 }, 1000);
-{{if $beforeEvent}}
-var eventDate = new Date("2016-08-26T16:00:00+01:00");
-	 var update = function() {
-	     var now = new Date();
-	     var diff = eventDate - now;
-		 if (diff < 0) {
-			 location.reload();
-		 }
-		 var days = Math.floor(diff / 86400000);
-		 var hours = Math.floor((diff % 86400000) / 3600000);
-		 var minutes = Math.floor((diff % 3600000) / 60000);
-		 var seconds = Math.floor((diff % 60000) / 1000);
-		 if (days > 0) { result = [ days, "d ", hours, "h ", minutes, "m ", seconds, "s " ].join(""); }
-		 else if (hours > 0) { result = [ hours, "h ", minutes, "m ", seconds, "s " ].join(""); }
-		 else if (minutes > 0) { result = [ minutes, "m ", seconds, "s " ].join(""); }
-		 else { result = [ seconds, "s " ].join(""); }
-	     document.getElementById('countdown').innerHTML = result;
-	 }
-	 update();
-	 setInterval(update, 1000);
-	{{end}}
 	</script>
     </body>
 </html>
