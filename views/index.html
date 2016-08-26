@@ -1,6 +1,5 @@
 {{$loggedIn := .loggedIn}}
 {{$beforeEvent := .beforeEvent}}
-{{$classMap := .classMap}}
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -69,15 +68,15 @@
 	         width: 210px; 
 		 margin: auto;
 	 }
-	 {{range $class, $info := .classes}}
-	 .stat-card-{{$class}} > .mdl-card__title {
+	 {{range $info := .classes}}
+	 .stat-card-{{$info.Class}} > .mdl-card__title {
 		 height: 254px;
 		 width: 210px;
-		 background: url('assets/{{$class}}.jpg') center;
+		 background: url('assets/{{$info.Class}}.jpg') center;
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	 .stat-card-{{$class}} > .mdl-card__actions {
+	 .stat-card-{{$info.Class}} > .mdl-card__actions {
 		 align-items: center;
 		 display: flex;
 		 box-sizing:border-box;
@@ -97,14 +96,14 @@
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	.stat-card-sniper-headshot > .mdl-card__title {
+	.stat-card-sniper-kills > .mdl-card__title {
 		 height: 254px;
 		 width: 210px;
 		 background: url('assets/sniper_headshot.png') center;
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	.stat-card-spy-backstab > .mdl-card__title {
+	.stat-card-spy-kills > .mdl-card__title {
 		 height: 254px;
 		 width: 210px;
 		 background: url('assets/spy_backstab.png') center;
@@ -366,32 +365,31 @@ $("#live-{{$match.ID}}").click(function() {
 			<section class="mdl-layout__tab-panel" id="stats">
 				<!-- STATS -->
 				<div class="grid">
-				  {{range $class, $info := .classes}}
-				  {{$className := index $classMap $class}}
+				  {{range $info := .classes}}
 				  {{if $info.HighestAirshots.Player.Name}}
 				  <div class="cell">
-				    <div class="stat-card stat-card-{{$class}}-airshot mdl-card mdl-shadow--2dp">
+				    <div class="stat-card stat-card-{{$info.Class}}-airshot mdl-card mdl-shadow--2dp">
 				      <div class="mdl-card__title">
 					<h2 class="mdl-card__title-text">{{$info.HighestAirshots.Player.Name}}</h2>
 				      </div>
-				      <div class="mdl-card__supporting-text">Highest {{$className}} Airshots: <b>{{$info.HighestAirshots.Stat}}</b></div>
+				      <div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Airshots: <b>{{$info.HighestAirshots.Stat}}</b></div>
 				    </div>
 				  </div>
 				  {{end}}
 				  {{if $info.HighestKills.Player.Name}}
 				  <div class="cell">
-				    <div class="stat-card stat-card-{{$class}} mdl-card mdl-shadow--2dp">
+				    <div class="stat-card stat-card-{{$info.Class}}-kills mdl-card mdl-shadow--2dp">
 				      <div class="mdl-card__title">
 					<h2 class="mdl-card__title-text">{{$info.HighestKills.Player.Name}}</h2>
 				      </div>
-				      <div class="mdl-card__supporting-text">Highest {{$className}} Kills: <b>{{$info.HighestKills.Stat}}</b></div>
+				      <div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Kills: <b>{{$info.HighestKills.Stat}}</b></div>
 				    </div>
 				  </div>
 				  {{end}}
 				  {{if $info.HighestDPM.Player.Name}}
 				  <div class="cell">
-				    <div class="stat-card stat-card-{{$class}} mdl-card mdl-shadow--2dp">
-				      {{if eq $class "medic"}}
+				    <div class="stat-card stat-card-{{$info.Class}} mdl-card mdl-shadow--2dp">
+				      {{if eq $info.Class "medic"}}
 				      <div class="mdl-card__title">
 					<h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
 				      </div>
@@ -402,8 +400,8 @@ $("#live-{{$match.ID}}").click(function() {
 				      </div>
 				      <div class="mdl-card__supporting-text">Highest Damage per Minute: <b>{{$info.HighestDPM.Stat}}</b></div>
 				      {{end}}
-				      <div class="stat-card-{{$class}} mdl-card__actions mdl-card--border">
-					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$class}}">View {{$className}} Stats</a>
+				      <div class="stat-card-{{$info.Class}} mdl-card__actions mdl-card--border">
+					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$info.Class}}">View {{$info.ClassName}} Stats</a>
 				      </div>
 				    </div>
 				  </div>
