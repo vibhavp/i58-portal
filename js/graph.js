@@ -11,7 +11,7 @@ window.addEventListener('load', function () {
 	"soldier": ["dpm", "kills", "kd", "airshots"],
 	"demoman": ["dpm", "kills", "kd", "airshots"],
 	"medic": ["drops", "ubers_per_drops"],
-	"sniper": ["headshots", "kills"],
+	"sniper": ["kills"],
 	"spy": ["kills", "kd"],
 	"pyro": ["kills", "kd"],
 	"engineer": ["kills"],
