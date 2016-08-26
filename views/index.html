@@ -77,15 +77,19 @@
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	{{if eq $class "soldier"}}
+	 .stat-card-{{$class}} > .mdl-card__actions {
+		 align-items: center;
+		 display: flex;
+		 box-sizing:border-box;
+	 }
+	 {{end}}
 	.stat-card-soldier-airshot > .mdl-card__title {
 		 height: 254px;
-	         width: 210px;
+		 width: 210px;
 		 background: url('assets/soldier_airshot.png') center;
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	{{else if eq $class "demoman"}}
 	.stat-card-demoman-airshot > .mdl-card__title {
 		 height: 254px;
 		 width: 210px;
@@ -93,13 +97,20 @@
 		 color: white;
 		 text-shadow: black 1px 1px;
 	}
-	{{end}}
-	 .stat-card-{{$class}} > .mdl-card__actions {
-		 align-items: center;
-		 display: flex;
-		 box-sizing:border-box;
-	 }
-	 {{end}}
+	.stat-card-sniper-headshot > .mdl-card__title {
+		 height: 254px;
+		 width: 210px;
+		 background: url('assets/sniper_headshot.png') center;
+		 color: white;
+		 text-shadow: black 1px 1px;
+	}
+	.stat-card-spy-backstab > .mdl-card__title {
+		 height: 254px;
+		 width: 210px;
+		 background: url('assets/spy_backstab.png') center;
+		 color: white;
+		 text-shadow: black 1px 1px;
+	}
 	 .index.mdl-layout__tab-panel {
 		 width: 100%;
 		 max-width: 720px;
@@ -165,7 +176,7 @@
 					<img src="assets/casters.jpg" alt="TFTV Casting Crew" style="max-width:720px; margin-left:-20px">
 				</div>
 				<div class="index mdl-shadow--2dp">
-					<p>Note: <em>i58.tf is not related to teamfortress.tv, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra for the assets used on the website, The0x539 and the teamfortress.tv for their help.</em></p>
+					<p>Note: <em>i58.tf is not related to teamfortress.tv, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra and Mindblow for the assets used on the website, The0x539 and the teamfortress.tv for their help.</em></p>
 				</div>
 			</section>
 			<section class="mdl-layout__tab-panel" id="matches">
