@@ -161,14 +161,80 @@
 					<p>This year's notable participants include European leaders <a href="http://teamfortress.tv/35108">Crowns</a>, <a href="http://teamfortress.tv/35167">Full Tilt</a>, <a href="http://teamfortress.tv/35404">XENEX</a> and Comfortably Spanked, as well as the reappearance of the Australian community with <a href="http://teamfortress.tv/34210">Jasmine Tea</a>, and obviously, two time champions (although their roster has significantly changed), the Americans of <a href="http://teamfortress.tv/34929">Froyotech</a>.</p>
 					<p>The event will take place</p>
 					<ul>
-						<li>starting Friday August 26th with group stages,</li>
-						<li>through Saturday with playoffs up to semi-finals,</li>
+						<li>starting Friday August 26th with group stages: a <a href="https://en.wikipedia.org/wiki/Round-robin_tournament">round-robin</a> for invite teams, <a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">swiss-system</a> for the rest,</li>
+						<li>through Saturday, where a <a href="https://en.wikipedia.org/wiki/Double-elimination_tournament">double-elimination bracket</a> will be played by the invite teams and the two best open teams,</li>
 						<li>and ending on Sunday 28th, with the consolation finals and grand finals.</li>
 					</ul>
 					<p>Changes from throughout the year to the competitive gamemode of 6v6 will also be part of this I-series' gameplay, such as the addition of <a href="http://teamfortress.tv/29927">Phi's cp_reckoner_b3</a> and also updated or pro version of maps, such as cp_snakewater_u13, koth_product_rc8 and cp_granary_pro_rc4, but most importantly the in-game integration of Coaches (through <a href="https://github.com/fwdcp/CompCtrl/releases/tag/0.5.0">CompCtrl</a>).</p>
 					<p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
 					<p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
 					<p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
+					<p><a href="http://comp.tf/wiki/Insomnia58">Comp.tf's wiki entry about i58</a></p>
+					<p><a href="https://www.reddit.com/r/tf2/comments/4zeeac/competitve_tf2_viewer_guide/">r/tf2's viewer guide</a></p>
+					<p><a href="https://www.reddit.com/r/tf2/comments/4zjbnm/the_maps_of_i58_a_quick_introduction/">r/tf2's map guide</a></p>
+				</div>
+				<div class="index mdl-shadow--2dp">
+					<h1 style="text-align:center">Teams</h1>
+					<img src="/assets/teams/crowns.png"></img>
+					<h5>Crowns eSports Club</h5>
+					<ul>
+						<li>Scout: Stark</li>
+						<li>Scout: Hafficool</li>
+						<li>Roamer: Drackk</li>
+						<li>Pocket: kaptain</li>
+						<li>Demoman: spudd</li>
+						<li>Medic: Raymon</li>
+					</ul>
+					<img src="/assets/teams/fulltilt.png"></img>
+					<h5>Full Tilt</h5>
+					<ul>
+						<li>Scout: Astt</li>
+						<li>Scout: Thalash</li>
+						<li>Roamer: Mike</li>
+						<li>Pocket: Silentes</li>
+						<li>Demoman: alle</li>
+						<li>Medic: kos</li>
+					</ul>
+					<img src="/assets/teams/xenex.png"></img>
+					<h5>Team XENEX</h5>
+					<ul>
+						<li>Scout: Schocky</li>
+						<li>Scout: Funs</li>
+						<li>Roamer: Thaigrr</li>
+						<li>Pocket: AMS</li>
+						<li>Demoman: Smirre</li>
+						<li>Medic: Flushy</li>
+					</ul>
+					<img src="/assets/teams/spanked.png"></img>
+					<h5>Comfortably Spanked</h5>
+					<ul>
+						<li>Scout: Hank</li>
+						<li>Scout: Dennia</li>
+						<li>Roamer: vani</li>
+						<li>Pocket: T0m</li>
+						<li>Demoman: adysky</li>
+						<li>Medic: skeej</li>
+					</ul>
+					<img src="/assets/teams/jasmine.png"></img>
+					<h5>Jasmine Tea</h5>
+					<ul>
+						<li>Scout: Yui</li>
+						<li>Scout: Madness</li>
+						<li>Roamer: Zaka</li>
+						<li>Pocket: Geoh</li>
+						<li>Demoman: Paulsen</li>
+						<li>Medic: Dave</li>
+					</ul>
+					<img src="/assets/teams/froyo.png"></img>
+					<h5>froyotech</h5>
+					<ul>
+						<li>Scout: b4nny</li>
+						<li>Scout: Freestate</li>
+						<li>Roamer: paddie</li>
+						<li>Pocket: TLR</li>
+						<li>Demoman: Muma</li>
+						<li>Medic: phorophor_</li>
+					</ul>
 				</div>
 				<div class="index mdl-shadow--2dp">
 					<h1 style="text-align:center">Coverage</h1>
@@ -253,7 +319,6 @@ $("#live-{{$match.ID}}").click(function() {
 				<div class="grid">
 				  {{range $class, $info := .classes}}
 				  {{$className := index $classMap $class}}
-
 				  {{if $info.HighestAirshots.Player.Name}}
 				  <div class="cell">
 				    <div class="stat-card stat-card-{{$class}}-airshot mdl-card mdl-shadow--2dp">
@@ -264,7 +329,6 @@ $("#live-{{$match.ID}}").click(function() {
 				    </div>
 				  </div>
 				  {{end}}
-
 				  {{if $info.HighestKills.Player.Name}}
 				  <div class="cell">
 				    <div class="stat-card stat-card-{{$class}} mdl-card mdl-shadow--2dp">
@@ -275,7 +339,6 @@ $("#live-{{$match.ID}}").click(function() {
 				    </div>
 				  </div>
 				  {{end}}
-
 				  {{if $info.HighestDPM.Player.Name}}
 				  <div class="cell">
 				    <div class="stat-card stat-card-{{$class}} mdl-card mdl-shadow--2dp">
@@ -363,16 +426,13 @@ var eventDate = new Date("2016-08-26T19:00:00+02:00");
 	</script>
     </body>
 </html>
-
 {{if .tracking}}
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
   ga('create', '{{.tracking}}', 'auto');
   ga('send', 'pageview');
-
 </script>
 {{end}}
