@@ -162,17 +162,11 @@
 		    {{end}}
 			<main class="mdl-layout__content">
 			<section class="index mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
-				{{if $beforeEvent}}
-				<div class="index mdl-shadow--2dp">
-					<h2 class="mdl-typography--display-3"  id="countdown" style="text-align:center"></h2>
-				</div>
-				{{else}}
 				<iframe src="http://player.twitch.tv/?channel=teamfortresstv" id="stream" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
 				<div style="text-align:center;">
 				  <button type="button" id="stream-button" style="margin:auto" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">teamfortress.tv #2</button>
 				</div>
 				<script src="/js/twitch_frame.js"></script>
-				{{end}}
 				<div class="index mdl-shadow--2dp">
 					<img class="center-image" src="assets/logo.png" alt="Logo"></img>
 					<p>i58 is the next installment of the <a href="https://insomniagamingfestival.com/i58/tournaments/event/team-fortress-2-2/">Insomnia Gaming LAN series</a> where the best competitive Team Fortress 2  teams from around the globe compete for the title of Worldwide Champions.</p>
