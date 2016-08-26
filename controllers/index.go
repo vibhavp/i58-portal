@@ -80,7 +80,7 @@ func newClassMap() map[string]highest {
 
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	indexPage := template.Must(template.ParseFiles("views/index.html"))
-	eventTime, e := time.Parse("2006-01-02T15:04:05-07:00", "2016-08-26T19:00:00+02:00")
+	eventTime, e := time.Parse("2006-01-02T15:04:05-07:00", "2016-08-26T16:00:00+01:00")
 	if e != nil {
 		log.Println(e)
 	}
