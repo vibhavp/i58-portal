@@ -2,4 +2,4 @@ code dump for the i58 TF2 portal project. WIP
 
 * Thanks
 
-The0x539 for design help, twiikuu for frontend stuff, hosting, nimtra for photoshopping the "logo".
+The0x539 for design help, twiikuu for frontend stuff, hosting, nimtra for photoshopping the "logo", mindblow for the SFM assets for airshot/headshot/backstab.
