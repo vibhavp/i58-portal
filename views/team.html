@@ -41,9 +41,6 @@
 		</span>
 		<span class="mdl-list__item-secondary-action">
 		    <button class="mdl-button mdl-js-button">
-			<a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
-		    </button>
-		    <button class="mdl-button mdl-js-button">
 			<a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
 		    </button>
 		    {{if $match.Highlights}}
@@ -51,7 +48,7 @@
 			    class="mdl-button mdl-js-button">
 			Highlights
 		    </button>
-		    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+		    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu"
 			for="highlights-{{$match.ID}}">
 			{{range $highlight := $match.Highlights}}
 			<li class="mdl-menu__item">
