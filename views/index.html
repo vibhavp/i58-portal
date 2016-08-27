@@ -1,455 +1,473 @@
 {{$loggedIn := .loggedIn}}
 {{$beforeEvent := .beforeEvent}}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>i58 TF2 Portal</title>
-		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.blue_grey-indigo.min.css" />
-		<style>
-	.center-image {
-		display: block;
-		margin: auto;
-	}
-	.mdl-layout__header {
-		min-height: 48px;
-		height: 48px;
-	}
-	.grid {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-around;
-	}
-	.cell {
-		flex: 0 0 auto;
-		margin: 8px;
-	}
-	 .mdl-layout__content {
-		 background-position: 50% 0;
-		 background-image: url("assets/background.png");
-		 /* background-position: center; */
-		 background-attachment: local;
-	 }
-	 .index.mdl-shadow--2dp {
-		 /* text-shadow: 1px 1/0px #000000; */
-		 color: #FFFFFF;
-		 background-color: rgba(33, 33, 33, 0.9);
-		 padding-bottom: 5px;
-		 padding-left: 20px;
-		 padding-right: 10px;
-		 padding-top: 5px;
-		 margin-top: 5px;
-	 }
-	 hr.style1 {
-		 border-width: 1px;
-		 color: rgba(255, 255, 255, 0.12);
-	 }
-	 .list-item.mdl-list__item {
-		 background-color: rgba(33, 33, 33, 0.46);
-		 color: #FFFFFF;
-		 /* height: 1px !important; */
-	 }
-	 .list-item {
-		 color: #FFFFFF;
-	 }
-	 table.teams {
-		 background-color: rgba(33, 33, 33, 0.46);
-		 color: #FFFFFF;
-		 text-shadow: 1px 0px #000000;
-		 width: 100%;
-		 max-width: 720px;
-		 margin: auto;
-	 }
-	 .teams > tbody > tr {
-		 cursor: pointer;
-	}
-	.stat-card.mdl-card {
-	         width: 210px; 
-		 margin: auto;
-	 }
-	 {{range $info := .classes}}
-	 .stat-card-{{$info.Class}} > .mdl-card__title {
-		 height: 254px;
-		 width: 210px;
-		 background: url('assets/{{$info.Class}}.jpg') center;
-		 color: white;
-		 text-shadow: black 1px 1px;
-	}
-	 .stat-card-{{$info.Class}} > .mdl-card__actions {
-		 align-items: center;
-		 display: flex;
-		 box-sizing:border-box;
-	 }
-	 {{end}}
-	.stat-card-soldier-airshot > .mdl-card__title {
-		 height: 254px;
-		 width: 210px;
-		 background: url('assets/soldier_airshot.png') center;
-		 color: white;
-		 text-shadow: black 1px 1px;
-	}
-	.stat-card-demoman-airshot > .mdl-card__title {
-		 height: 254px;
-		 width: 210px;
-		 background: url('assets/demo_airshot.png') center;
-		 color: white;
-		 text-shadow: black 1px 1px;
-	}
-	.stat-card-sniper-kills > .mdl-card__title {
-		 height: 254px;
-		 width: 210px;
-		 background: url('assets/sniper_headshot.png') center;
-		 color: white;
-		 text-shadow: black 1px 1px;
-	}
-	.stat-card-spy-kills > .mdl-card__title {
-		 height: 254px;
-		 width: 210px;
-		 background: url('assets/spy_backstab.png') center;
-		 color: white;
-		 text-shadow: black 1px 1px;
-	}
-	 .index.mdl-layout__tab-panel {
-		 width: 100%;
-		 max-width: 720px;
-		 margin: 0 auto;
-	 }
-	 .crowns   > .mdl-card__title { background: url('/assets/teams/crowns.png') center no-repeat; }
-	 .fulltilt > .mdl-card__title { background: url('/assets/teams/fulltilt.png') center no-repeat; }
-	 .xenex    > .mdl-card__title { background: url('/assets/teams/xenex.png') center no-repeat; }
-	 .spanked  > .mdl-card__title { background: url('/assets/teams/spanked.png') center no-repeat; }
-	 .jasmine  > .mdl-card__title { background: url('/assets/teams/jasmine.png') center no-repeat; }
-	 .froyo    > .mdl-card__title { background: url('/assets/teams/froyo.png') center no-repeat; }
-	 #teamcards > .cell > .mdl-card > .mdl-card__title {
-		 height: 140px;
-	 }
-	 #teamcards > .cell > .mdl-card {
-		 width: 300px;
-		 background-color: #263238;
-	 }
-	 #teamcards > .cell > .mdl-card > .mdl-card__supporting-text {
-		 color: #e0e0e0;
-	 }
-	 .teams tbody tr:hover {
-		 background-color: rgba(66, 66, 66, 0.92);
-	 }
-		</style>
-		<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-		<script src="https://platform.twitter.com/widgets.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	</head>
-	<body>
-		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
-			    mdl-layout--fixed-tabs">
-		    {{if .matches}}
-		    <header class="mdl-layout__header">
-			<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-			    <a href="#index" class="mdl-layout__tab is-active">Index</a>
-			    <a href="#matches" class="mdl-layout__tab">Matches</a>
-			    <a href="#stats" class="mdl-layout__tab">Stats</a>
-			    <a href="#teams" class="mdl-layout__tab">Teams</a>
-			    <a href="#social" class="mdl-layout__tab">Social</a>
-			</div>
-		    </header>
-		    {{else}}
-		    <header class="mdl-layout__header">
-			<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-			    <a href="#index" class="mdl-layout__tab is-active">Index</a>
-			    <a href="#social" class="mdl-layout__tab">Social</a>
-			</div>
-		    </header>
-		    {{end}}
-			<main class="mdl-layout__content">
-			<section class="index mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
-				<iframe src="https://player.twitch.tv/?channel=teamfortresstv" id="stream" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
-				<script src="/js/twitch_frame.js"></script>
-				<div class="index mdl-shadow--2dp">
-					<img class="center-image" src="assets/logo.png" alt="Logo"></img>
-					<p>i58 is the next installment of the <a href="https://insomniagamingfestival.com/i58/tournaments/event/team-fortress-2-2/">Insomnia Gaming LAN series</a> where the best competitive Team Fortress 2  teams from around the globe compete for the title of Worldwide Champions.</p>
-					<p>This year's notable participants include European leaders <a href="http://teamfortress.tv/35108">Crowns</a>, <a href="http://teamfortress.tv/35167">Full Tilt</a>, <a href="http://teamfortress.tv/35404">XENEX</a> and Comfortably Spanked, as well as the reappearance of the Australian community with <a href="http://teamfortress.tv/34210">Jasmine Tea</a>, and obviously, two time champions (although their roster has significantly changed), the Americans of <a href="http://teamfortress.tv/34929">Froyotech</a>.</p>
-					<p>The event will take place</p>
-					<ul>
-						<li>starting Friday August 26th with group stages: a <a href="https://en.wikipedia.org/wiki/Round-robin_tournament">round-robin</a> for invite teams, <a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">swiss-system</a> for the rest,</li>
-						<li>through Saturday, where a <a href="https://en.wikipedia.org/wiki/Double-elimination_tournament">double-elimination bracket</a> will be played by the invite teams and the two best open teams,</li>
-						<li>and ending on Sunday 28th, with the consolation finals and grand finals.</li>
-					</ul>
-					<p>Changes from throughout the year to the competitive gamemode of 6v6 will also be part of this I-series' gameplay, such as the addition of <a href="http://teamfortress.tv/29927">Phi's cp_reckoner_b3</a> and also updated or pro version of maps, such as cp_snakewater_u13, koth_product_rc8 and cp_granary_pro_rc4, but most importantly the in-game integration of Coaches (through <a href="https://github.com/fwdcp/CompCtrl/releases/tag/0.5.0">CompCtrl</a>).</p>
-					<p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
-					<p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
-					<p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
-					<p><a href="http://www.teamfortress.tv/35587">teamfortress.tv Viewer Guide</a></p>
-					<p><a href="http://comp.tf/wiki/Insomnia58">Comp.tf's wiki entry about i58</a></p>
-					<p><a href="https://www.reddit.com/r/tf2/comments/4zo6wo/multiplay_i58_schedule_discussion/">r/tf2's schedule page</a></p>
-					<p><a href="https://www.reddit.com/r/tf2/comments/4zeeac/competitve_tf2_viewer_guide/">r/tf2's viewer guide</a></p>
-					<p><a href="https://www.reddit.com/r/tf2/comments/4zjbnm/the_maps_of_i58_a_quick_introduction/">r/tf2's map guide</a></p>
-				</div>
-				<div class="index mdl-shadow--2dp">
-					<h1 style="text-align:center">Teams</h1>
-					<div class="grid" id="teamcards">
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp crowns">
-								<div class="mdl-card__title mdl-card--expand"></div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: Stark</li>
-										<li>Scout: Hafficool</li>
-										<li>Roamer: Drackk</li>
-										<li>Pocket: kaptain</li>
-										<li>Demoman: spudd</li>
-										<li>Medic: Raymon</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp fulltilt">
-								<div class="mdl-card__title mdl-card--expand"></div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: Astt</li>
-										<li>Scout: Thalash</li>
-										<li>Roamer: Mike</li>
-										<li>Pocket: Silentes</li>
-										<li>Demoman: alle</li>
-										<li>Medic: kos</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp xenex">
-								<div class="mdl-card__title mdl-card--expand">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: Schocky</li>
-										<li>Scout: Funs</li>
-										<li>Roamer: Thaigrr</li>
-										<li>Pocket: AMS</li>
-										<li>Demoman: Smirre</li>
-										<li>Medic: Flushy</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp spanked">
-								<div class="mdl-card__title mdl-card--expand">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: Hank</li>
-										<li>Scout: Dennia</li>
-										<li>Roamer: vani</li>
-										<li>Pocket: T0m</li>
-										<li>Demoman: adysky</li>
-										<li>Medic: skeej</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp jasmine">
-								<div class="mdl-card__title mdl-card--expand">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: Yui</li>
-										<li>Scout: Madness</li>
-										<li>Roamer: Zaka</li>
-										<li>Pocket: Geoh</li>
-										<li>Demoman: Paulsen</li>
-										<li>Medic: Dave</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="cell">
-							<div class="mdl-card mdl-shadow--2dp froyo">
-								<div class="mdl-card__title mdl-card--expand">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<ul>
-										<li>Scout: b4nny</li>
-										<li>Scout: Freestate</li>
-										<li>Roamer: paddie</li>
-										<li>Pocket: TLR</li>
-										<li>Demoman: Muma</li>
-										<li>Medic: phorophor_</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="index mdl-shadow--2dp">
-					<h1 style="text-align:center">Coverage</h1>
-					<p>The matchups are bound to be legendary, and to bring you coverage for these games is none other than a <a href="http://teamfortress.tv/35217">complete broadcasting crew from teamfortress.tv</a> with timelessly famous members of the community. Alongside teamfortress.tv's video coverage on <a href="http://twitch.tv/teamfortresstv">Twitch</a>, we're proud to announce i58.tf will provide updated logs, per-player stats, stream highlights and social media in real time.</p>
-					<img src="assets/casters.jpg" alt="TFTV Casting Crew" style="max-width:720px; margin-left:-20px">
-				</div>
-				<div class="index mdl-shadow--2dp">
-					<p>Note: <em>i58.tf is not related to teamfortress.tv, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra and Mindblow for the assets used on the website, The0x539 and the teamfortress.tv for their help.</em></p>
-				</div>
-			</section>
-			<section class="mdl-layout__tab-panel" id="matches">
-				<!-- MATCHES -->
-				<ul class="list-item mdl-list">
-					{{range $match := .matches}}
-					<li class="mdl-shadow--2dp list-item mdl-list__item mdl-list__item--two-line">
-						<span class="mdl-list__item-primary-content">
-							{{if $match.Live}}
-							<div id="live" class="icon material-icons mdl-list__item-icon">tv</div>
-							<div class="mdl-tooltip mdl-tooltip--large" for="live">
-								Live
-							</div>
-							{{end}}
-							<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i> - {{$match.Map}}</span>
-							<span class="mdl-list__item-sub-title"><div style="color:#FFFFFF">{{$match.Stage}}</div></span>
-						</span>
-						<span class="mdl-list__item-secondary-info">
-							{{$match.Team1Score}}-{{$match.Team2Score}}
-						</span>
-						<span class="mdl-list__item-secondary-action">
-							<button class="mdl-button mdl-js-button">
-								<a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
-							</button>
-							<button class="mdl-button mdl-js-button">
-								<a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
-							</button>
-							{{if $match.Highlights}}
-							<button id="highlights-{{$match.ID}}"
-			   class="mdl-button mdl-js-button">
-								<p style="color:white">Highlights</p>
-							</button>
-							<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
-		   for="highlights-{{$match.ID}}">
-								{{range $highlight := $match.Highlights}}
-								<li class="mdl-menu__item">
-									<a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
-								</li>
-								{{end}}
-							</ul>
-							{{end}}
-							{{if $loggedIn}}
-							<button id="admin-{{$match.ID}}"
-			   class="mdl-button mdl-js-button">
-								<div style="color:#FFFFFF">Admin</div>
-							</button>
-							<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-		   for="admin-{{$match.ID}}">
-								<li class="mdl-menu__item">
-									<button id="live-{{$match.ID}}"
-				 class="mdl-button mdl-js-button">
-										{{if $match.Live}}Unset live{{else}}
-										Set Live{{end}}
-									</button>
-								</li>
-							</ul>
-							<script>
-$("#live-{{$match.ID}}").click(function() {
-	$.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
-			{match_id: {{$match.ID}}})
-	.fail(function(data) {
-		alert("Error: "+JSON.stringify(data))
-	})
-});
-							</script>
-							{{end}}
-						</span>
-					</li>
-					{{end}}
-				</ul>
-			</section>
-			<section class="mdl-layout__tab-panel" id="stats">
-				<!-- STATS -->
-				<div class="grid">
-				  {{range $info := .classes}}
-				  {{if $info.HighestDPM.Player.Name}}
-				  <div class="cell">
-				    <div class="stat-card stat-card-{{$info.Class}} mdl-card mdl-shadow--2dp">
-				      {{if eq $info.Class "medic"}}
-				      <div class="mdl-card__title">
-					<h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
-				      </div>
-				      <div class="mdl-card__supporting-text">Highest Ubers per Drop: <b>{{$info.HighestUbersPerDrop.Stat}}</b></div>
-				      {{else}}
-				      <div class="mdl-card__title">
-					<h2 class="mdl-card__title-text">{{$info.HighestDPM.Player.Name}}</h2>
-				      </div>
-				      <div class="mdl-card__supporting-text">Highest Damage per Minute: <b>{{$info.HighestDPM.Stat}}</b></div>
-				      {{end}}
-				      <div class="stat-card-{{$info.Class}} mdl-card__actions mdl-card--border">
-					<a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$info.Class}}">View {{$info.ClassName}} Stats</a>
-				      </div>
-				    </div>
-				  </div>
-				  {{end}}
-				  {{if $info.HighestAirshots.Player.Name}}
-				  <div class="cell">
-				    <div class="stat-card stat-card-{{$info.Class}}-airshot mdl-card mdl-shadow--2dp">
-				      <div class="mdl-card__title">
-					<h2 class="mdl-card__title-text">{{$info.HighestAirshots.Player.Name}}</h2>
-				      </div>
-				      <div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Airshots: <b>{{$info.HighestAirshots.Stat}}</b></div>
-				    </div>
-				  </div>
-				  {{end}}
-				  {{if $info.HighestKills.Player.Name}}
-				  <div class="cell">
-				    <div class="stat-card stat-card-{{$info.Class}}-kills mdl-card mdl-shadow--2dp">
-				      <div class="mdl-card__title">
-					<h2 class="mdl-card__title-text">{{$info.HighestKills.Player.Name}}</h2>
-				      </div>
-				      <div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Kills: <b>{{$info.HighestKills.Stat}}</b></div>
-				    </div>
-				  </div>
-				  {{end}}
-				  {{end}}
-				</div>
-			</section>
-		<section class="mdl-layout__tab-panel" id="teams">
-		    <table class="mdl-data-table mdl-js-data-table teams">
-			<thead>
-			    <tr>
-				<th style="color:#FFFFFF" class="mdl-data-table__cell--non-numeric">Team</th>
-				<th style="color:#FFFFFF">Map Wins</th>
-				<th style="color:#FFFFFF">Map Losses</th>
-			    </tr>
-			</thead>
-			<tbody>
-			    {{range $team := .teams}}
-				<tr onclick="location.href='/team?id={{$team.ID}}'">
-				<td class="mdl-data-table__cell--non-numeric">{{$team.Name}}</td>
-				<td>{{$team.Wins}}</td>
-				<td>{{$team.Losses}}</td>
-				</tr>
-				</a>
-				{{end}}
-			</tbody>
-		    </table>
-		</section>
-		<section class="mdl-layout__tab-panel" id="social">
-			<!-- SOCIAL -->
-			<div class="grid" id="tweet-list"></div>
-		</section>
-	    </main>
+  <head>
+    <meta charset="UTF-8">
+    <title>i58 TF2 Portal</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.blue_grey-indigo.min.css" />
+    <style>
+      .center-image {
+      display: block;
+      margin: auto;
+      }
+      .mdl-layout__header {
+      min-height: 48px;
+      height: 48px;
+      }
+      .grid {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around;
+      }
+      .cell {
+      flex: 0 0 auto;
+      margin: 8px;
+      }
+      .mdl-layout__content {
+      background-position: 50% 0;
+      background-image: url("assets/background.png");
+      /* background-position: center; */
+      background-attachment: local;
+      }
+      .index.mdl-shadow--2dp {
+      /* text-shadow: 1px 1/0px #000000; */
+      color: #FFFFFF;
+      background-color: rgba(33, 33, 33, 0.9);
+      padding-bottom: 5px;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-top: 5px;
+      margin-top: 5px;
+      }
+      hr.style1 {
+      border-width: 1px;
+      color: rgba(255, 255, 255, 0.12);
+      }
+      .list-item.mdl-list__item {
+      background-color: rgba(33, 33, 33, 0.46);
+      color: #FFFFFF;
+      /* height: 1px !important; */
+      }
+      .list-item {
+      color: #FFFFFF;
+      }
+      table.teams {
+      background-color: rgba(33, 33, 33, 0.46);
+      color: #FFFFFF;
+      text-shadow: 1px 0px #000000;
+      width: 100%;
+      max-width: 720px;
+      margin: auto;
+      }
+      .teams > tbody > tr {
+      cursor: pointer;
+      }
+      .stat-card.mdl-card {
+      width: 210px; 
+      margin: auto;
+      }
+      {{range $info := .classes}}
+      .stat-card-{{$info.Class}} > .mdl-card__title {
+      height: 254px;
+      width: 210px;
+      background: url('assets/{{$info.Class}}.jpg') center;
+      color: white;
+      text-shadow: black 1px 1px;
+      }
+      .stat-card-{{$info.Class}} > .mdl-card__actions {
+      align-items: center;
+      display: flex;
+      box-sizing:border-box;
+      }
+      {{end}}
+      .stat-card-soldier-airshot > .mdl-card__title {
+      height: 254px;
+      width: 210px;
+      background: url('assets/soldier_airshot.png') center;
+      color: white;
+      text-shadow: black 1px 1px;
+      }
+      .stat-card-demoman-airshot > .mdl-card__title {
+      height: 254px;
+      width: 210px;
+      background: url('assets/demo_airshot.png') center;
+      color: white;
+      text-shadow: black 1px 1px;
+      }
+      .stat-card-sniper-kills > .mdl-card__title {
+      height: 254px;
+      width: 210px;
+      background: url('assets/sniper_headshot.png') center;
+      color: white;
+      text-shadow: black 1px 1px;
+      }
+      .stat-card-spy-kills > .mdl-card__title {
+      height: 254px;
+      width: 210px;
+      background: url('assets/spy_backstab.png') center;
+      color: white;
+      text-shadow: black 1px 1px;
+      }
+      .index.mdl-layout__tab-panel {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      }
+      .crowns   > .mdl-card__title { background: url('/assets/teams/crowns.png') center no-repeat; }
+      .fulltilt > .mdl-card__title { background: url('/assets/teams/fulltilt.png') center no-repeat; }
+      .xenex    > .mdl-card__title { background: url('/assets/teams/xenex.png') center no-repeat; }
+      .spanked  > .mdl-card__title { background: url('/assets/teams/spanked.png') center no-repeat; }
+      .jasmine  > .mdl-card__title { background: url('/assets/teams/jasmine.png') center no-repeat; }
+      .froyo    > .mdl-card__title { background: url('/assets/teams/froyo.png') center no-repeat; }
+      #teamcards > .cell > .mdl-card > .mdl-card__title {
+      height: 140px;
+      }
+      #teamcards > .cell > .mdl-card {
+      width: 300px;
+      background-color: #263238;
+      }
+      #teamcards > .cell > .mdl-card > .mdl-card__supporting-text {
+      color: #e0e0e0;
+      }
+      .teams tbody tr:hover {
+      background-color: rgba(66, 66, 66, 0.92);
+      }
+    </style>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script src="https://platform.twitter.com/widgets.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+		mdl-layout--fixed-tabs">
+      {{if .matches}}
+      <header class="mdl-layout__header">
+	<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+	  <a href="#index" class="mdl-layout__tab is-active">Index</a>
+	  <a href="#matches" class="mdl-layout__tab">Matches</a>
+	  <a href="#stats" class="mdl-layout__tab">Stats</a>
+	  <a href="#teams" class="mdl-layout__tab">Teams</a>
+	  <a href="#highlights" class="mdl-layout__tab">Highlights</a>
+	  <a href="#social" class="mdl-layout__tab">Social</a>
 	</div>
-	<script>
-function addTweet(url) {
-	var id = url.split('/').slice(-1)[0];
-	var el = document.createElement('div');
-	el.classList.add('cell');
-	twttr.widgets.createTweet(id, el);
-	$('#tweet-list').prepend(el);
-}
-setTimeout(function () {
-    {{range $tweet := .tweets}}
-    addTweet("{{$tweet.URL}}");
-    {{end}}
-}, 1000);
-	</script>
-    </body>
+      </header>
+      {{else}}
+      <header class="mdl-layout__header">
+	<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+	  <a href="#index" class="mdl-layout__tab is-active">Index</a>
+	  <a href="#social" class="mdl-layout__tab">Social</a>
+	</div>
+      </header>
+      {{end}}
+      <main class="mdl-layout__content">
+	<section class="index mdl-layout__tab-panel mdl-color-text--grey-700 is-active" id="index">
+	  <iframe src="https://player.twitch.tv/?channel=teamfortresstv" id="stream" height="405" width="720" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+	  <script src="/js/twitch_frame.js"></script>
+	  <div class="index mdl-shadow--2dp">
+	    <img class="center-image" src="assets/logo.png" alt="Logo"></img>
+	    <p>i58 is the next installment of the <a href="https://insomniagamingfestival.com/i58/tournaments/event/team-fortress-2-2/">Insomnia Gaming LAN series</a> where the best competitive Team Fortress 2  teams from around the globe compete for the title of Worldwide Champions.</p>
+	    <p>This year's notable participants include European leaders <a href="http://teamfortress.tv/35108">Crowns</a>, <a href="http://teamfortress.tv/35167">Full Tilt</a>, <a href="http://teamfortress.tv/35404">XENEX</a> and Comfortably Spanked, as well as the reappearance of the Australian community with <a href="http://teamfortress.tv/34210">Jasmine Tea</a>, and obviously, two time champions (although their roster has significantly changed), the Americans of <a href="http://teamfortress.tv/34929">Froyotech</a>.</p>
+	    <p>The event will take place</p>
+	    <ul>
+	      <li>starting Friday August 26th with group stages: a <a href="https://en.wikipedia.org/wiki/Round-robin_tournament">round-robin</a> for invite teams, <a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">swiss-system</a> for the rest,</li>
+	      <li>through Saturday, where a <a href="https://en.wikipedia.org/wiki/Double-elimination_tournament">double-elimination bracket</a> will be played by the invite teams and the two best open teams,</li>
+	      <li>and ending on Sunday 28th, with the consolation finals and grand finals.</li>
+	    </ul>
+	    <p>Changes from throughout the year to the competitive gamemode of 6v6 will also be part of this I-series' gameplay, such as the addition of <a href="http://teamfortress.tv/29927">Phi's cp_reckoner_b3</a> and also updated or pro version of maps, such as cp_snakewater_u13, koth_product_rc8 and cp_granary_pro_rc4, but most importantly the in-game integration of Coaches (through <a href="https://github.com/fwdcp/CompCtrl/releases/tag/0.5.0">CompCtrl</a>).</p>
+	    <p>Thanks to sponsors <a href="http://scrap.tf">scrap.tf, powered by community-famous Geel</a>, and <a href="https://ocz.com">Toshiba's OCZ</a>, the prize pool for this event has reached £8,500 so far.</p>
+	    <p><a href="https://battlefy.com/insomniateamfortress2/%5Bi58-lan%5D-%C2%A35000-tf2-open/576ba40600aeb4270c59df2e/info">Insomnia tournament Rules and Brackets</a></p>
+	    <p><a href="https://insomniagamingfestival.com/i58/tournaments/byoc-tournament-schedule/">Insomnia Schedule (Click on TF2)</a></p>
+	    <p><a href="http://www.teamfortress.tv/35587">teamfortress.tv Viewer Guide</a></p>
+	    <p><a href="http://comp.tf/wiki/Insomnia58">Comp.tf's wiki entry about i58</a></p>
+	    <p><a href="https://www.reddit.com/r/tf2/comments/4zo6wo/multiplay_i58_schedule_discussion/">r/tf2's schedule page</a></p>
+	    <p><a href="https://www.reddit.com/r/tf2/comments/4zeeac/competitve_tf2_viewer_guide/">r/tf2's viewer guide</a></p>
+	    <p><a href="https://www.reddit.com/r/tf2/comments/4zjbnm/the_maps_of_i58_a_quick_introduction/">r/tf2's map guide</a></p>
+	  </div>
+	  <div class="index mdl-shadow--2dp">
+	    <h1 style="text-align:center">Teams</h1>
+	    <div class="grid" id="teamcards">
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp crowns">
+		  <div class="mdl-card__title mdl-card--expand"></div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: Stark</li>
+		      <li>Scout: Hafficool</li>
+		      <li>Roamer: Drackk</li>
+		      <li>Pocket: kaptain</li>
+		      <li>Demoman: spudd</li>
+		      <li>Medic: Raymon</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp fulltilt">
+		  <div class="mdl-card__title mdl-card--expand"></div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: Astt</li>
+		      <li>Scout: Thalash</li>
+		      <li>Roamer: Mike</li>
+		      <li>Pocket: Silentes</li>
+		      <li>Demoman: alle</li>
+		      <li>Medic: kos</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp xenex">
+		  <div class="mdl-card__title mdl-card--expand">
+		  </div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: Schocky</li>
+		      <li>Scout: Funs</li>
+		      <li>Roamer: Thaigrr</li>
+		      <li>Pocket: AMS</li>
+		      <li>Demoman: Smirre</li>
+		      <li>Medic: Flushy</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp spanked">
+		  <div class="mdl-card__title mdl-card--expand">
+		  </div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: Hank</li>
+		      <li>Scout: Dennia</li>
+		      <li>Roamer: vani</li>
+		      <li>Pocket: T0m</li>
+		      <li>Demoman: adysky</li>
+		      <li>Medic: skeej</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp jasmine">
+		  <div class="mdl-card__title mdl-card--expand">
+		  </div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: Yui</li>
+		      <li>Scout: Madness</li>
+		      <li>Roamer: Zaka</li>
+		      <li>Pocket: Geoh</li>
+		      <li>Demoman: Paulsen</li>
+		      <li>Medic: Dave</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	      <div class="cell">
+		<div class="mdl-card mdl-shadow--2dp froyo">
+		  <div class="mdl-card__title mdl-card--expand">
+		  </div>
+		  <div class="mdl-card__supporting-text">
+		    <ul>
+		      <li>Scout: b4nny</li>
+		      <li>Scout: Freestate</li>
+		      <li>Roamer: paddie</li>
+		      <li>Pocket: TLR</li>
+		      <li>Demoman: Muma</li>
+		      <li>Medic: phorophor_</li>
+		    </ul>
+		  </div>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="index mdl-shadow--2dp">
+	    <h1 style="text-align:center">Coverage</h1>
+	    <p>The matchups are bound to be legendary, and to bring you coverage for these games is none other than a <a href="http://teamfortress.tv/35217">complete broadcasting crew from teamfortress.tv</a> with timelessly famous members of the community. Alongside teamfortress.tv's video coverage on <a href="http://twitch.tv/teamfortresstv">Twitch</a>, we're proud to announce i58.tf will provide updated logs, per-player stats, stream highlights and social media in real time.</p>
+	    <img src="assets/casters.jpg" alt="TFTV Casting Crew" style="max-width:720px; margin-left:-20px">
+	  </div>
+	  <div class="index mdl-shadow--2dp">
+	    <p>Note: <em>i58.tf is not related to teamfortress.tv, it's simply a website vibhavp decided to create to showcase stats within the LAN, and twiikuu will be attending the event as a spectator and will update the website with on-site news. The sources are available on <a href="https://github.com/vibhavp/i58-portal">github</a>. Thanks to Valve, Uberchain, Nimtra and Mindblow for the assets used on the website, The0x539 and the teamfortress.tv for their help.</em></p>
+	  </div>
+	</section>
+	<section class="mdl-layout__tab-panel" id="matches">
+	  <!-- MATCHES -->
+	  <ul class="list-item mdl-list">
+	    {{range $match := .matches}}
+	    <li class="mdl-shadow--2dp list-item mdl-list__item mdl-list__item--two-line">
+	      <span class="mdl-list__item-primary-content">
+		{{if $match.Live}}
+		<div id="live" class="icon material-icons mdl-list__item-icon">tv</div>
+		<div class="mdl-tooltip mdl-tooltip--large" for="live">
+		  Live
+		</div>
+		{{end}}
+		<span><i>{{$match.Team1.Name}}</i> vs <i>{{$match.Team2.Name}}</i> - {{$match.Map}}</span>
+		<span class="mdl-list__item-sub-title"><div style="color:#FFFFFF">{{$match.Stage}}</div></span>
+	      </span>
+	      <span class="mdl-list__item-secondary-info">
+		{{$match.Team1Score}}-{{$match.Team2Score}}
+	      </span>
+	      <span class="mdl-list__item-secondary-action">
+		<button class="mdl-button mdl-js-button">
+		  <a href="{{$match.MatchPage}}" target="_blank">Match Page</a>
+		</button>
+		<button class="mdl-button mdl-js-button">
+		  <a href="http://logs.tf/{{$match.LogsID}}" target="_blank">Logs</a>
+		</button>
+		{{if $match.Highlights}}
+		<button id="highlights-{{$match.ID}}"
+			class="mdl-button mdl-js-button">
+		  <p style="color:white">Highlights</p>
+		</button>
+		<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+		    for="highlights-{{$match.ID}}">
+		  {{range $highlight := $match.Highlights}}
+		  <li class="mdl-menu__item">
+		    <a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
+		  </li>
+		  {{end}}
+		</ul>
+		{{end}}
+		{{if $loggedIn}}
+		<button id="admin-{{$match.ID}}"
+			class="mdl-button mdl-js-button">
+		  <div style="color:#FFFFFF">Admin</div>
+		</button>
+		<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+		    for="admin-{{$match.ID}}">
+		  <li class="mdl-menu__item">
+		    <button id="live-{{$match.ID}}"
+			    class="mdl-button mdl-js-button">
+		      {{if $match.Live}}Unset live{{else}}
+		      Set Live{{end}}
+		    </button>
+		  </li>
+		</ul>
+		<script>
+		  $("#live-{{$match.ID}}").click(function() {
+		  $.get({{if $match.Live}}"/api/admin/unset_live"{{else}}"/api/admin/set_live"{{end}},
+		  {match_id: {{$match.ID}}})
+		  .fail(function(data) {
+		  alert("Error: "+JSON.stringify(data))
+		  })
+		  });
+		</script>
+		{{end}}
+	      </span>
+	    </li>
+	    {{end}}
+	  </ul>
+	</section>
+	<section class="mdl-layout__tab-panel" id="stats">
+	  <!-- STATS -->
+	  <div class="grid">
+	    {{range $info := .classes}}
+	    {{if $info.HighestDPM.Player.Name}}
+	    <div class="cell">
+	      <div class="stat-card stat-card-{{$info.Class}} mdl-card mdl-shadow--2dp">
+		{{if eq $info.Class "medic"}}
+		<div class="mdl-card__title">
+		  <h3 class="mdl-card__title-text">{{$info.HighestUbersPerDrop.Player.Name}}</h3>
+		</div>
+		<div class="mdl-card__supporting-text">Highest Ubers per Drop: <b>{{$info.HighestUbersPerDrop.Stat}}</b></div>
+		{{else}}
+		<div class="mdl-card__title">
+		  <h2 class="mdl-card__title-text">{{$info.HighestDPM.Player.Name}}</h2>
+		</div>
+		<div class="mdl-card__supporting-text">Highest Damage per Minute: <b>{{$info.HighestDPM.Stat}}</b></div>
+		{{end}}
+		<div class="stat-card-{{$info.Class}} mdl-card__actions mdl-card--border">
+		  <a style="margin:auto" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/stats?class={{$info.Class}}">View {{$info.ClassName}} Stats</a>
+		</div>
+	      </div>
+	    </div>
+	    {{end}}
+	    {{if $info.HighestAirshots.Player.Name}}
+	    <div class="cell">
+	      <div class="stat-card stat-card-{{$info.Class}}-airshot mdl-card mdl-shadow--2dp">
+		<div class="mdl-card__title">
+		  <h2 class="mdl-card__title-text">{{$info.HighestAirshots.Player.Name}}</h2>
+		</div>
+		<div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Airshots: <b>{{$info.HighestAirshots.Stat}}</b></div>
+	      </div>
+	    </div>
+	    {{end}}
+	    {{if $info.HighestKills.Player.Name}}
+	    <div class="cell">
+	      <div class="stat-card stat-card-{{$info.Class}}-kills mdl-card mdl-shadow--2dp">
+		<div class="mdl-card__title">
+		  <h2 class="mdl-card__title-text">{{$info.HighestKills.Player.Name}}</h2>
+		</div>
+		<div class="mdl-card__supporting-text">Highest {{$info.ClassName}} Kills: <b>{{$info.HighestKills.Stat}}</b></div>
+	      </div>
+	    </div>
+	    {{end}}
+	    {{end}}
+	  </div>
+	</section>
+	<section class="mdl-layout__tab-panel" id="teams">
+	  <table class="mdl-data-table mdl-js-data-table teams">
+	    <thead>
+	      <tr>
+		<th style="color:#FFFFFF" class="mdl-data-table__cell--non-numeric">Team</th>
+		<th style="color:#FFFFFF">Map Wins</th>
+		<th style="color:#FFFFFF">Map Losses</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      {{range $team := .teams}}
+	      <tr onclick="location.href='/team?id={{$team.ID}}'">
+		<td class="mdl-data-table__cell--non-numeric">{{$team.Name}}</td>
+		<td>{{$team.Wins}}</td>
+		<td>{{$team.Losses}}</td>
+	      </tr>
+	      {{end}}
+	    </tbody>
+	  </table>
+	</section>
+	<section class="mdl-layout__tab-panel" id="highlights">
+	  <ul class="list-item mdl-list">
+	    {{range $highlight := .highlights}}
+	    	    <li class="mdl-shadow--2dp list-item mdl-list__item mdl-list__item--two-line">
+		      <span class="mdl-list__item-primary-content">
+			<a href="{{$highlight.URL}}" target="_blank">{{$highlight.Title}}</a>
+			<span class="mdl-list__item-sub-title"><div style="color:#FFFFFF">{{$highlight.Match.Map}}</div></span>
+
+		      </span>
+		      <span class="mdl-list__item-secondary-info">
+			{{$highlight.Match.Team1.Name}} vs {{$highlight.Match.Team2.Name}}
+		      </span>
+
+		    </li>
+	  {{end}}
+	  </ul>
+	</section>
+	<section class="mdl-layout__tab-panel" id="social">
+	  <!-- SOCIAL -->
+	  <div class="grid" id="tweet-list"></div>
+	</section>
+      </main>
+    </div>
+    <script>
+      function addTweet(url) {
+      var id = url.split('/').slice(-1)[0];
+      var el = document.createElement('div');
+      el.classList.add('cell');
+      twttr.widgets.createTweet(id, el);
+      $('#tweet-list').prepend(el);
+      }
+      setTimeout(function () {
+      {{range $tweet := .tweets}}
+      addTweet("{{$tweet.URL}}");
+      {{end}}
+      }, 1000);
+    </script>
+  </body>
 </html>
 {{if .tracking}}
 <script>

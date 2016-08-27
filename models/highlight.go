@@ -9,6 +9,7 @@ import (
 type Highlight struct {
 	ID      uint   `gorm:"primary_key" json:"-"`
 	MatchID uint   `json:"-"`
+	Match   Match  `gorm:"ForeignKey:MatchID"`
 	Title   string `sql:"not null" json:"title"`
 	URL     string `sql:"not null;unique"`
 }
@@ -31,4 +32,10 @@ func AddHighlight(logsID int, url, title string) error {
 		Title:   title,
 		URL:     url,
 	}).Error
+}
+
+func GetAllHighlights() []Highlight {
+	var highlights []Highlight
+	db.DB.Preload("Match").Preload("Match.Team1").Preload("Match.Team2").Order("id desc").Find(&highlights)
+	return highlights
 }

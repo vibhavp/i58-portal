@@ -100,6 +100,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		"beforeEvent": time.Now().Before(eventTime),
 		"tweets":      models.GetAllTweets(),
 		"tracking":    config.Config.AnalyticsID,
+		"highlights":  models.GetAllHighlights(),
 	})
 	if err != nil {
 		log.Println(err)
