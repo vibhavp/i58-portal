@@ -19,6 +19,6 @@ func AddTweet(url string) error {
 
 func GetAllTweets() []Tweet {
 	var tweets []Tweet
-	db.DB.Order("id desc").Limit(10).Find(&tweets)
+	db.DB.Order("id").Limit(10).Find(&tweets)
 	return tweets
 }
