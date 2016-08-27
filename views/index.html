@@ -1,6 +1,6 @@
 {{$loggedIn := .loggedIn}}
 {{$beforeEvent := .beforeEvent}}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -146,14 +146,21 @@
       {{if .matches}}
       <header class="mdl-layout__header">
 	<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-	  <a href="#index" class="mdl-layout__tab is-active">Index</a>
-	  <a href="#matches" class="mdl-layout__tab">Matches</a>
-	  <a href="#stats" class="mdl-layout__tab">Stats</a>
-	  <a href="#teams" class="mdl-layout__tab">Teams</a>
-	  <a href="#highlights" class="mdl-layout__tab">Highlights</a>
-	  <a href="#social" class="mdl-layout__tab">Social</a>
+	  <a href="#index" id="index" class="mdl-layout__tab is-active">Index</a>
+	  <a href="#matches" id="matches" class="mdl-layout__tab">Matches</a>
+	  <a href="#stats" id="stats" class="mdl-layout__tab">Stats</a>
+	  <a href="#teams" id="teams" class="mdl-layout__tab">Teams</a>
+	  <a href="#highlights" id="highlights" class="mdl-layout__tab">Highlights</a>
+	  <a href="#social" id="social" class="mdl-layout__tab">Social</a>
 	</div>
       </header>
+      <script>
+	$('.mdl-layout').on('mdl-componentupgraded', function() {
+	if (document.location.hash != "") {
+	$(document.location.hash)[0].click();
+	}
+	})
+      </script>
       {{else}}
       <header class="mdl-layout__header">
 	<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
