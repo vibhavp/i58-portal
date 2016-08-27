@@ -139,6 +139,7 @@ func serveTeam(w http.ResponseWriter, r *http.Request) {
 		"teamName":   models.GetTeamName(uint(teamID)),
 		"matches":    models.GetMatches(uint(teamID)),
 		"players":    models.GetTeamPlayers(uint(teamID)),
+		"tracking":   config.Config.AnalyticsID,
 	})
 	if err != nil {
 		log.Println(err)
