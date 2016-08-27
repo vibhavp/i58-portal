@@ -44,7 +44,8 @@ func SetLosses(teamID uint, losses int) error {
 
 func GetMatches(teamID uint) []Match {
 	var matches []Match
-	db.DB.Preload("Team1").Preload("Team2").
+	db.DB.Preload("Highlights").Preload("Team1").Preload("Team2").
+		Order("id desc").
 		Where("team1_id = ? OR team2_id = ?", teamID, teamID).
 		Find(&matches)
 	return matches
